@@ -1,6 +1,6 @@
 # Buckshot and Crosses
 
-![Buckshot and Crosses Thumbnail](./src/assets/images/buckshot-and-crosses-thumbnail.png)
+![Buckshot and Crosses Thumbnail](./src/assets/buckshot-and-crosses-thumbnail.png)
 
 A web game, written in pure HTML, CSS and JavaScript, giving a Buckshot Roulette flavour to classic Noughts and Crosses.
 
