@@ -4,6 +4,10 @@
 
 A web game, written in pure HTML, CSS and JavaScript, giving a Buckshot Roulette flavour to classic Noughts and Crosses.
 
+This project was created as part of IS3S664 - Advanced Internet and Mobile Computing at the University of South Wales (USW).
+
+The curriculum for the module can be found here: [IS3S664 - Advanced Internet and Mobile Computing](https://curriculum.southwales.ac.uk/Module/Details?moduleId=MOD009108)
+
 ## Contents
 
 - [Buckshot and Crosses](#buckshot-and-crosses)
