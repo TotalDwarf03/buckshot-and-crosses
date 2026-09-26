@@ -1,6 +1,6 @@
 # Buckshot and Crosses
 
-![Buckshot and Crosses Thumbnail](./src/assets/buckshot-and-crosses-thumbnail.png)
+![Buckshot and Crosses Thumbnail](./src/assets/branding/buckshot-and-crosses-thumbnail.png)
 
 A web game, written in pure HTML, CSS and JavaScript, giving a Buckshot Roulette flavour to classic Noughts and Crosses.
 
@@ -18,6 +18,7 @@ The curriculum for the module can be found here: [IS3S664 - Advanced Internet an
   - [Linting and Formatting](#linting-and-formatting)
     - [Prettier](#prettier)
     - [Markdownlint](#markdownlint)
+  - [AI Usage Disclaimer](#ai-usage-disclaimer)
   - [Credits and Acknowledgements](#credits-and-acknowledgements)
 
 ## Getting Started
@@ -64,6 +65,16 @@ npx markdownlint . --fix
 ```
 
 This will lint all Markdown files in the project and automatically fix any issues that can be fixed.
+
+## AI Usage Disclaimer
+
+AI has been used in this project to assist in the following areas:
+
+- Art and graphics generation (i.e. game assets, branding, etc.)
+- CSS styling and layout suggestions
+- Animations and transitions
+
+The functionality of the game has been implemented by hand, alongside brainstorming and planning of the game mechanics, rules and logic.
 
 ## Credits and Acknowledgements
 

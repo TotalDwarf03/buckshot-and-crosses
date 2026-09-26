@@ -1,285 +1,373 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 3%;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .side-panel {
-    width: 100%;
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 1vh;
-    padding: 1vh 0;
-    transition: opacity 0.3s ease-out;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(11rem, 14vw, 18rem);
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1vh;
+  padding: 1vh 0;
+  transition: opacity 0.3s ease-out;
 }
 
 .side-panel.aiming {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #shell-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  left: clamp(1rem, 2vw, 2.5rem);
+  height: 100%;
+  overflow: hidden;
 }
 
 #center-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2vh;
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vh;
+  height: 100%;
+  z-index: 1;
 }
 
 #game-container {
-    display: flex;
-    gap: 8px;
-    transform-origin: center;
+  position: relative;
+  width: min(88vw, calc(88vh * 1.5));
+  aspect-ratio: 3 / 2;
+  transform-origin: center;
+}
+
+#table-backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/backdrops/table.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  pointer-events: none;
 }
 
 #grid {
-    width: 70vh;
-    height: 70vh;
-    max-width: 70vw;
-    max-height: 70vw;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2%;
+  position: absolute;
+  left: 31.15%;
+  top: 24.65%;
+  width: 38.55%;
+  height: 47.55%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0;
 }
 
 .grid-item {
-    background-color: #4CAF50;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+  background: transparent;
+  color: rgba(245, 238, 220, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.2rem, 2.2vh, 2.4rem);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
 }
 
-/* .grid-item:hover {
-    background-color: #45a049;
-    cursor: pointer;
-} */
+.cell-mark {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
 
 .status-container {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
 }
 
 #inventory {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1vh;
-    width: 100%;
-    transition: opacity 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 2vh;
+  transition: opacity 0.3s ease-out;
 }
 
 #inventory.aiming {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #shotgun-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  right: clamp(1rem, 2vw, 2.5rem);
+  width: clamp(12rem, 18vw, 22rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  z-index: 1002;
 }
 
 #shotgun-image {
-    width: 100%;
-    height: auto;
-    max-height: 15vh;
-    cursor: pointer;
+  position: relative;
+  z-index: 1003;
+  display: block;
+  width: auto;
+  height: auto;
+  max-height: 70vh;
+  cursor: pointer;
+  transform-origin: bottom center;
+  transition: transform 0.2s ease;
+  transform: none;
+}
+
+#shotgun-image:hover {
+  transform: scale(1.1);
 }
 
 #shotgun-warning {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.4);
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.63);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  margin-top: 8px;
 }
 
 #shotgun-image:hover + #shotgun-warning {
-    opacity: 1;
+  opacity: 1;
 }
 
 #crosshair {
-    position: fixed;
-    pointer-events: none;
-    z-index: 1000;
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+#aiming-help {
+  position: fixed;
+  left: 50%;
+  top: 3.5vh;
+  transform: translateX(-50%);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.63);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+  transition: opacity 0.2s ease;
 }
 
 #shell-loader {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-    justify-content: flex-end;
-    padding: 1vh 0;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  justify-content: flex-end;
+  padding: 1vh 0;
+  overflow: hidden;
 }
 
 #shell-loader.is-chambering {
-    animation: shell-tray-rattle 0.11s linear 4;
+  animation: shell-tray-rattle 0.11s linear 4;
 }
 
 .shell-image {
-    width: 100%;
-    height: auto;
-    max-height: 9.5vh;
-    object-fit: contain;
-    opacity: 0;
-    transform: translate3d(var(--shell-drop-x, 0), -22vh, 0) rotate(var(--shell-drop-rotate, 0deg));
-    transform-origin: center center;
+  width: 100%;
+  height: auto;
+  max-height: 9.5vh;
+  object-fit: contain;
+  opacity: 0;
+  transform: translate3d(var(--shell-drop-x, 0), -22vh, 0)
+    rotate(var(--shell-drop-rotate, 0deg));
+  transform-origin: center center;
 }
 
 .shell-image.is-visible {
-    animation: shell-drop-in 0.7s cubic-bezier(0.12, 0.82, 0.2, 1) forwards;
+  animation: shell-drop-in 0.7s cubic-bezier(0.12, 0.82, 0.2, 1) forwards;
 }
 
 .shell-image.is-loading {
-    animation: shell-load-out 0.34s cubic-bezier(0.24, 0.88, 0.34, 1) forwards;
+  animation: shell-load-out 0.34s cubic-bezier(0.24, 0.88, 0.34, 1) forwards;
 }
 
 /* Vignette effect */
 #vignette {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 998;
-    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 998;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
 }
 
 /* Shake animation for aiming stress */
 @keyframes shake {
-    0%, 100% {
-        transform: translate(0, 0);
-    }
-    10% {
-        transform: translate(-3px, -3px);
-    }
-    20% {
-        transform: translate(3px, 2px);
-    }
-    30% {
-        transform: translate(-2px, 3px);
-    }
-    40% {
-        transform: translate(2px, -2px);
-    }
-    50% {
-        transform: translate(-3px, 2px);
-    }
-    60% {
-        transform: translate(3px, -3px);
-    }
-    70% {
-        transform: translate(-2px, -2px);
-    }
-    80% {
-        transform: translate(2px, 3px);
-    }
-    90% {
-        transform: translate(-3px, -2px);
-    }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-3px, -3px);
+  }
+  20% {
+    transform: translate(3px, 2px);
+  }
+  30% {
+    transform: translate(-2px, 3px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-3px, 2px);
+  }
+  60% {
+    transform: translate(3px, -3px);
+  }
+  70% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 3px);
+  }
+  90% {
+    transform: translate(-3px, -2px);
+  }
 }
 
 /* Zoom effect for tunnel vision */
 @keyframes tunnel-vision {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.3);
-    }
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.3);
+  }
 }
 
 @keyframes shell-drop-in {
-    0% {
-        opacity: 0;
-        transform: translate3d(var(--shell-drop-x, 0), -22vh, 0) rotate(var(--shell-drop-rotate, 0deg));
-    }
-    68% {
-        opacity: 1;
-        transform: translate3d(calc(var(--shell-drop-x, 0) * -0.18), 1.8vh, 0) rotate(calc(var(--shell-drop-rotate, 0deg) * -0.28));
-    }
-    84% {
-        opacity: 1;
-        transform: translate3d(calc(var(--shell-drop-x, 0) * 0.08), -0.35vh, 0) rotate(calc(var(--shell-drop-rotate, 0deg) * 0.1));
-    }
-    100% {
-        opacity: 1;
-        transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0) rotate(var(--shell-rest-rotate, 0deg));
-    }
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--shell-drop-x, 0), -22vh, 0)
+      rotate(var(--shell-drop-rotate, 0deg));
+  }
+  68% {
+    opacity: 1;
+    transform: translate3d(calc(var(--shell-drop-x, 0) * -0.18), 1.8vh, 0)
+      rotate(calc(var(--shell-drop-rotate, 0deg) * -0.28));
+  }
+  84% {
+    opacity: 1;
+    transform: translate3d(calc(var(--shell-drop-x, 0) * 0.08), -0.35vh, 0)
+      rotate(calc(var(--shell-drop-rotate, 0deg) * 0.1));
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0)
+      rotate(var(--shell-rest-rotate, 0deg));
+  }
 }
 
 @keyframes shell-load-out {
-    0% {
-        opacity: 1;
-        transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0) rotate(var(--shell-rest-rotate, 0deg)) scale(1);
-    }
-    16% {
-        opacity: 1;
-        transform: translate3d(calc(var(--shell-rest-x, 0) - 0.5vh), calc(var(--shell-rest-y, 0) + 0.4vh), 0) rotate(calc(var(--shell-rest-rotate, 0deg) - 4deg)) scale(1.02);
-    }
-    44% {
-        opacity: 1;
-        transform: translate3d(calc(var(--shell-rest-x, 0) + (var(--shell-load-x, 8vh) * 0.52)), calc(var(--shell-rest-y, 0) + (var(--shell-load-y, -1.2vh) * 0.42)), 0) rotate(calc(var(--shell-rest-rotate, 0deg) + (var(--shell-load-rotate, 16deg) * 0.62))) scale(0.98);
-    }
-    100% {
-        opacity: 0;
-        transform: translate3d(calc(var(--shell-rest-x, 0) + var(--shell-load-x, 8vh)), calc(var(--shell-rest-y, 0) + var(--shell-load-y, -1.2vh)), 0) rotate(calc(var(--shell-rest-rotate, 0deg) + var(--shell-load-rotate, 16deg))) scale(0.92);
-    }
+  0% {
+    opacity: 1;
+    transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0)
+      rotate(var(--shell-rest-rotate, 0deg)) scale(1);
+  }
+  16% {
+    opacity: 1;
+    transform: translate3d(
+        calc(var(--shell-rest-x, 0) - 0.5vh),
+        calc(var(--shell-rest-y, 0) + 0.4vh),
+        0
+      )
+      rotate(calc(var(--shell-rest-rotate, 0deg) - 4deg)) scale(1.02);
+  }
+  44% {
+    opacity: 1;
+    transform: translate3d(
+        calc(var(--shell-rest-x, 0) + (var(--shell-load-x, 8vh) * 0.52)),
+        calc(var(--shell-rest-y, 0) + (var(--shell-load-y, -1.2vh) * 0.42)),
+        0
+      )
+      rotate(
+        calc(
+          var(--shell-rest-rotate, 0deg) +
+            (var(--shell-load-rotate, 16deg) * 0.62)
+        )
+      )
+      scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(
+        calc(var(--shell-rest-x, 0) + var(--shell-load-x, 8vh)),
+        calc(var(--shell-rest-y, 0) + var(--shell-load-y, -1.2vh)),
+        0
+      )
+      rotate(
+        calc(var(--shell-rest-rotate, 0deg) + var(--shell-load-rotate, 16deg))
+      )
+      scale(0.92);
+  }
 }
 
 @keyframes shell-tray-rattle {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-0.24vh);
-    }
-    75% {
-        transform: translateX(0.28vh);
-    }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-0.24vh);
+  }
+  75% {
+    transform: translateX(0.28vh);
+  }
+}
+
+body.aiming,
+body:has(#shotgun-image:hover) {
+  animation: shake 0.1s infinite;
 }
 
 body.aiming {
-    cursor: none;
-    animation: shake 0.1s infinite;
+  cursor: none;
+}
+
+body.aiming #aiming-help {
+  opacity: 1;
 }
 
 #game-container.aiming {
-    animation: tunnel-vision 0.3s ease-out forwards;
-}
-
-#shotgun-image.hovering {
-    transform: scale(1.1);
-    transition: transform 0.2s;
-}
-
-body.background-shake {
-    animation: shake 0.1s infinite;
+  animation: tunnel-vision 0.3s ease-out forwards;
 }
