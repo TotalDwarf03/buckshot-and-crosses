@@ -1,12 +1,65 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 3%;
+}
+
+.side-panel {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vh;
+    padding: 1vh 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.side-panel.aiming {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#shell-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#center-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    width: 100%;
+    height: 100%;
+}
+
+#game-container {
+    display: flex;
+    gap: 8px;
+    transform-origin: center;
+}
+
 #grid {
-    width: 300px;
-    height: 300px;
+    width: 70vh;
+    height: 70vh;
+    max-width: 70vw;
+    max-height: 70vw;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 5px;
-    margin: auto;
-    margin-top: 50px;
+    gap: 2%;
 }
 
 .grid-item {
@@ -18,10 +71,10 @@
     font-size: 24px;
 }
 
-.grid-item:hover {
+/* .grid-item:hover {
     background-color: #45a049;
     cursor: pointer;
-}
+} */
 
 .status-container {
     text-align: center;
@@ -33,54 +86,200 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    margin-top: 20px;
+    gap: 1vh;
+    width: 100%;
+    transition: opacity 0.3s ease-out;
 }
 
-#shotgun-slot {
-    width: 300px;
-    height: 56px;
-    border: 2px solid #1f3d1f;
-    background-color: #d8e7c9;
-    color: #1f3d1f;
+#inventory.aiming {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#shotgun-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 8px;
-    box-sizing: border-box;
 }
 
 #shotgun-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 15vh;
     cursor: pointer;
 }
 
-.inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 68px);
-    gap: 8px;
+#shotgun-warning {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-.inventory-slot {
-    border: 2px solid #1f3d1f;
-    background-color: #d8e7c9;
-    color: #1f3d1f;
-    width: 68px;
-    height: 68px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0;
-    box-sizing: border-box;
+#shotgun-image:hover + #shotgun-warning {
+    opacity: 1;
 }
 
 #crosshair {
     position: fixed;
     pointer-events: none;
     z-index: 1000;
-    width: 60px;
-    height: 60px;
+}
+
+#shell-loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    justify-content: flex-end;
+    padding: 1vh 0;
+    overflow: hidden;
+}
+
+#shell-loader.is-chambering {
+    animation: shell-tray-rattle 0.11s linear 4;
+}
+
+.shell-image {
+    width: 100%;
+    height: auto;
+    max-height: 9.5vh;
+    object-fit: contain;
+    opacity: 0;
+    transform: translate3d(var(--shell-drop-x, 0), -22vh, 0) rotate(var(--shell-drop-rotate, 0deg));
+    transform-origin: center center;
+}
+
+.shell-image.is-visible {
+    animation: shell-drop-in 0.7s cubic-bezier(0.12, 0.82, 0.2, 1) forwards;
+}
+
+.shell-image.is-loading {
+    animation: shell-load-out 0.34s cubic-bezier(0.24, 0.88, 0.34, 1) forwards;
+}
+
+/* Vignette effect */
+#vignette {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+/* Shake animation for aiming stress */
+@keyframes shake {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    10% {
+        transform: translate(-3px, -3px);
+    }
+    20% {
+        transform: translate(3px, 2px);
+    }
+    30% {
+        transform: translate(-2px, 3px);
+    }
+    40% {
+        transform: translate(2px, -2px);
+    }
+    50% {
+        transform: translate(-3px, 2px);
+    }
+    60% {
+        transform: translate(3px, -3px);
+    }
+    70% {
+        transform: translate(-2px, -2px);
+    }
+    80% {
+        transform: translate(2px, 3px);
+    }
+    90% {
+        transform: translate(-3px, -2px);
+    }
+}
+
+/* Zoom effect for tunnel vision */
+@keyframes tunnel-vision {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.3);
+    }
+}
+
+@keyframes shell-drop-in {
+    0% {
+        opacity: 0;
+        transform: translate3d(var(--shell-drop-x, 0), -22vh, 0) rotate(var(--shell-drop-rotate, 0deg));
+    }
+    68% {
+        opacity: 1;
+        transform: translate3d(calc(var(--shell-drop-x, 0) * -0.18), 1.8vh, 0) rotate(calc(var(--shell-drop-rotate, 0deg) * -0.28));
+    }
+    84% {
+        opacity: 1;
+        transform: translate3d(calc(var(--shell-drop-x, 0) * 0.08), -0.35vh, 0) rotate(calc(var(--shell-drop-rotate, 0deg) * 0.1));
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0) rotate(var(--shell-rest-rotate, 0deg));
+    }
+}
+
+@keyframes shell-load-out {
+    0% {
+        opacity: 1;
+        transform: translate3d(var(--shell-rest-x, 0), var(--shell-rest-y, 0), 0) rotate(var(--shell-rest-rotate, 0deg)) scale(1);
+    }
+    16% {
+        opacity: 1;
+        transform: translate3d(calc(var(--shell-rest-x, 0) - 0.5vh), calc(var(--shell-rest-y, 0) + 0.4vh), 0) rotate(calc(var(--shell-rest-rotate, 0deg) - 4deg)) scale(1.02);
+    }
+    44% {
+        opacity: 1;
+        transform: translate3d(calc(var(--shell-rest-x, 0) + (var(--shell-load-x, 8vh) * 0.52)), calc(var(--shell-rest-y, 0) + (var(--shell-load-y, -1.2vh) * 0.42)), 0) rotate(calc(var(--shell-rest-rotate, 0deg) + (var(--shell-load-rotate, 16deg) * 0.62))) scale(0.98);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(calc(var(--shell-rest-x, 0) + var(--shell-load-x, 8vh)), calc(var(--shell-rest-y, 0) + var(--shell-load-y, -1.2vh)), 0) rotate(calc(var(--shell-rest-rotate, 0deg) + var(--shell-load-rotate, 16deg))) scale(0.92);
+    }
+}
+
+@keyframes shell-tray-rattle {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-0.24vh);
+    }
+    75% {
+        transform: translateX(0.28vh);
+    }
+}
+
+body.aiming {
+    cursor: none;
+    animation: shake 0.1s infinite;
+}
+
+#game-container.aiming {
+    animation: tunnel-vision 0.3s ease-out forwards;
+}
+
+#shotgun-image.hovering {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
+
+body.background-shake {
+    animation: shake 0.1s infinite;
 }

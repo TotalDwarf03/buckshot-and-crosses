@@ -8,42 +8,40 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <!-- Nought and Crosses Grid -->
-    <div id="grid">
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
-        <div class="grid-item" onclick="updateCell(this)"></div>
+    <!-- Left panel: Shell container -->
+    <div id="shell-container" class="side-panel">
+        <div id="shell-loader"></div>
     </div>
 
-    <div class="status-container">
-        <p id="turn-display"></p>
-        <button id="reset-button" onclick="resetGame()">Reset Game</button>
+    <!-- Center panel: Game Grid -->
+    <div id="center-panel">
+        <div id="game-container">
+            <div id="grid">
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+                <div class="grid-item" onclick="updateCell(this)"></div>
+            </div>
+        </div>
     </div>
 
-    <div id="inventory">
-        <div id="shotgun-slot">
+    <!-- Right panel: Shotgun -->
+    <div id="shotgun-container" class="side-panel">
+        <div id="inventory">
             <img src="assets/shotgun.png" alt="Shotgun" id="shotgun-image" onclick="pickupShotgun()">
-        </div>
-
-        <div class="inventory-grid">
-            <div class="inventory-slot" id="inventory-slot-1"></div>
-            <div class="inventory-slot" id="inventory-slot-2"></div>
-            <div class="inventory-slot" id="inventory-slot-3"></div>
-            <div class="inventory-slot" id="inventory-slot-4"></div>
+            <div id="shotgun-warning">Point of no return</div>
         </div>
     </div>
 
-    <img src="assets/crosshair.png" alt="Crosshair" id="crosshair" hidden>
+    <img src="assets/ads.png" alt="Crosshair" id="crosshair" hidden>
+
+    <div id="vignette" hidden></div>
 
     <script src="scripts/main.js"></script>
-    <script>
-        updateTurnDisplay();
-    </script>
 </body>
 </html>
