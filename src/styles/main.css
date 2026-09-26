@@ -1,0 +1,30 @@
+#grid {
+    width: 300px;
+    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.grid-item {
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.grid-item:hover {
+    background-color: #45a049;
+    cursor: pointer;
+}
+
+.status-container {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}

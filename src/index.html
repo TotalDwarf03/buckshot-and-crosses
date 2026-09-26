@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buckshot and Crosses</title>
+
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Nought and Crosses Grid -->
+    <div id="grid">
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+        <div class="grid-item" onclick="updateCell(this)"></div>
+    </div>
+
+    <div class="status-container">
+        <p id="turn-display"></p>
+        <button id="reset-button" onclick="resetGame()">Reset Game</button>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script>
+        updateTurnDisplay();
+    </script>
+</body>
+</html>
