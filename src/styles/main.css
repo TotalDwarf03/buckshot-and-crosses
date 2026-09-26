@@ -28,3 +28,59 @@
     margin-top: 20px;
     font-size: 18px;
 }
+
+#inventory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+#shotgun-slot {
+    width: 300px;
+    height: 56px;
+    border: 2px solid #1f3d1f;
+    background-color: #d8e7c9;
+    color: #1f3d1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+#shotgun-image {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: pointer;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 68px);
+    gap: 8px;
+}
+
+.inventory-slot {
+    border: 2px solid #1f3d1f;
+    background-color: #d8e7c9;
+    color: #1f3d1f;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#crosshair {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+}
