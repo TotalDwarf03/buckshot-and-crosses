@@ -120,11 +120,6 @@ function pumpShotgun() {
   // Remove the current shell and reveal it to the player
   const currentShell = shells.shift();
 
-  // If there is only one shell left, reload the shotgun
-  if (shells.length === 0) {
-    shells = loadShotgun();
-  }
-
   // Reset the shotgun and animate the shell being ejected from the shotgun
   resetShotgun();
 
@@ -151,6 +146,13 @@ function pumpShotgun() {
   setTimeout(() => {
     shellLoader.innerHTML = "";
   }, 1380);
+
+  // If there is only one shell left, reload the shotgun
+  setTimeout(() => {
+    if (shells.length === 0) {
+      shells = loadShotgun();
+    }
+  }, 1500);
 }
 
 function updateCell(cell) {
