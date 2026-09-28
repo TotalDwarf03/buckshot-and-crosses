@@ -2,6 +2,7 @@ let grid = Array(9).fill(null);
 let win = null;
 let crosshairListener = null;
 let shotgunClickListener = null;
+let pumpListener = null;
 let shotgunPickedUp = false;
 let shells;
 let reloading = false;
@@ -93,6 +94,63 @@ function renderCellMark(cell, mark) {
   markImage.className = "cell-mark";
 
   cell.appendChild(markImage);
+}
+
+function createShellElement(shellType, motionProfile) {
+  const img = document.createElement("img");
+  img.src = `assets/shells/${shellType}-shell.png`;
+  img.alt = "Cartridge";
+  img.className = "shell-image";
+  img.style.setProperty("--shell-drop-x", motionProfile.dropX);
+  img.style.setProperty("--shell-drop-rotate", motionProfile.dropRotate);
+  img.style.setProperty("--shell-rest-x", motionProfile.restX);
+  img.style.setProperty("--shell-rest-y", motionProfile.restY);
+  img.style.setProperty("--shell-rest-rotate", motionProfile.restRotate);
+  img.style.setProperty("--shell-load-x", motionProfile.loadX);
+  img.style.setProperty("--shell-load-y", motionProfile.loadY);
+  img.style.setProperty("--shell-load-rotate", motionProfile.loadRotate);
+  return img;
+}
+
+function pumpShotgun() {
+  if (!shotgunPickedUp || reloading || shells.length === 0) {
+    return;
+  }
+
+  // Remove the current shell and reveal it to the player
+  const currentShell = shells.shift();
+
+  // If there is only one shell left, reload the shotgun
+  if (shells.length === 0) {
+    shells = loadShotgun();
+  }
+
+  // Reset the shotgun and animate the shell being ejected from the shotgun
+  resetShotgun();
+
+  // Show the shell in the shell loader
+  const shellLoader = document.getElementById("shell-loader");
+  shellLoader.innerHTML = "";
+
+  const motionProfile = createShellMotionProfile();
+  const img = createShellElement(currentShell, motionProfile);
+  shellLoader.appendChild(img);
+
+  setTimeout(() => {
+    img.classList.add("is-visible");
+  }, 50);
+
+  // Animate the shell being ejected from the shotgun after a short delay
+  setTimeout(() => {
+    img.classList.remove("is-visible");
+    img.classList.add("is-loading");
+  }, 1000);
+
+  // Remove the shell from the shell loader after the ejection animation is complete
+  // Animation duration is 340ms, so wait 1000ms + 340ms = 1340ms, plus a small buffer
+  setTimeout(() => {
+    shellLoader.innerHTML = "";
+  }, 1380);
 }
 
 function updateCell(cell) {
@@ -234,6 +292,20 @@ function pickupShotgun() {
 
   document.addEventListener("click", shotgunClickListener, true);
 
+  // Setup listener for spacebar to pump the shotgun
+  if (pumpListener) {
+    document.removeEventListener("keydown", pumpListener);
+  }
+
+  pumpListener = (event) => {
+    if (event.code === "Space" && shotgunPickedUp) {
+      event.preventDefault();
+      pumpShotgun();
+    }
+  };
+
+  document.addEventListener("keydown", pumpListener);
+
   if (document.body.requestPointerLock) {
     document.body.requestPointerLock();
   }
@@ -267,6 +339,11 @@ function resetShotgun() {
   if (shotgunClickListener) {
     document.removeEventListener("click", shotgunClickListener, true);
     shotgunClickListener = null;
+  }
+
+  if (pumpListener) {
+    document.removeEventListener("keydown", pumpListener);
+    pumpListener = null;
   }
 
   // Exit pointer lock if it's currently active (Give the user back control of the mouse)
@@ -325,18 +402,7 @@ function loadShotgun() {
 
   sortedShells.forEach((shell, index) => {
     const motionProfile = shellMotionProfiles[index];
-    const img = document.createElement("img");
-    img.src = `assets/shells/${shell}-shell.png`;
-    img.alt = "Cartridge";
-    img.className = "shell-image";
-    img.style.setProperty("--shell-drop-x", motionProfile.dropX);
-    img.style.setProperty("--shell-drop-rotate", motionProfile.dropRotate);
-    img.style.setProperty("--shell-rest-x", motionProfile.restX);
-    img.style.setProperty("--shell-rest-y", motionProfile.restY);
-    img.style.setProperty("--shell-rest-rotate", motionProfile.restRotate);
-    img.style.setProperty("--shell-load-x", motionProfile.loadX);
-    img.style.setProperty("--shell-load-y", motionProfile.loadY);
-    img.style.setProperty("--shell-load-rotate", motionProfile.loadRotate);
+    const img = createShellElement(shell, motionProfile);
     shellLoader.appendChild(img);
   });
 

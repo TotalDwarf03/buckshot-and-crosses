@@ -23,6 +23,7 @@ body {
   gap: 1vh;
   padding: 1vh 0;
   transition: opacity 0.3s ease-out;
+  z-index: 1000;
 }
 
 .side-panel.aiming {
@@ -327,6 +328,18 @@ body {
         )
       )
       scale(0.98);
+  }
+  75% {
+    opacity: 1;
+    transform: translate3d(
+        calc(var(--shell-rest-x, 0) + var(--shell-load-x, 8vh)),
+        calc(var(--shell-rest-y, 0) + var(--shell-load-y, -1.2vh)),
+        0
+      )
+      rotate(
+        calc(var(--shell-rest-rotate, 0deg) + var(--shell-load-rotate, 16deg))
+      )
+      scale(0.92);
   }
   100% {
     opacity: 0;
