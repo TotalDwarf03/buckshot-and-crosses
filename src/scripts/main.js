@@ -6,6 +6,7 @@ let pumpListener = null;
 let shotgunPickedUp = false;
 let shells;
 let reloading = false;
+let pumpAnimating = false;
 let currentAimPoint = null;
 
 const CROSSHAIR_OFFSET_X = 817.5;
@@ -117,6 +118,8 @@ function pumpShotgun() {
     return;
   }
 
+  pumpAnimating = true;
+
   // Remove the current shell and reveal it to the player
   const currentShell = shells.shift();
 
@@ -152,6 +155,7 @@ function pumpShotgun() {
     if (shells.length === 0) {
       shells = loadShotgun();
     }
+    pumpAnimating = false;
   }, 1500);
 }
 
@@ -225,7 +229,7 @@ function checkWin() {
 }
 
 function pickupShotgun() {
-  if (shotgunPickedUp || reloading) return;
+  if (shotgunPickedUp || reloading || pumpAnimating) return;
 
   shotgunPickedUp = true;
   const vignette = document.getElementById("vignette");
@@ -390,7 +394,7 @@ function loadShotgun() {
 
   // Sort the shells so that the display doesn't match the order they will be loaded into the shotgun
   const shellPriority = { x: 1, o: 2, blank: 3 };
-  const sortedShells = shells.sort(
+  const sortedShells = [...shells].sort(
     (a, b) => shellPriority[a] - shellPriority[b],
   );
   const shellMotionProfiles = sortedShells.map(() =>
