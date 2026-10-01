@@ -85,6 +85,25 @@ body {
   animation: shell-load-out 0.34s cubic-bezier(0.24, 0.88, 0.34, 1) forwards;
 }
 
+/* Health Styling */
+#health-container {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 21;
+  pointer-events: auto;
+}
+
+.health-point {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
 /* Game Board Styling */
 
 #game-container {

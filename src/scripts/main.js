@@ -14,6 +14,9 @@ const CROSSHAIR_OFFSET_Y = 210;
 
 let items = Array(3).fill(null);
 
+let health = 3;
+updateHealthDisplay();
+
 document.addEventListener("pointerlockchange", () => {
   if (shotgunPickedUp && document.pointerLockElement == null) {
     resetShotgun();
@@ -467,10 +470,10 @@ function loadShotgun(generateItem = true) {
 
 function addItem() {
   const availableItems = [
-    "custom-handcuffs",
-    "custom-flashlight",
+    // "custom-handcuffs",
+    // "custom-flashlight",
     "cigarette-pack",
-    "strange-contraption",
+    // "strange-contraption",
     "expired-vodka",
   ];
 
@@ -491,5 +494,23 @@ function updateInventoryDisplay(newItem, emptySlot) {
   if (newItem) {
     const itemElement = document.createElement(newItem);
     slotToUpdate.appendChild(itemElement);
+  }
+}
+
+function updateHealth(increment) {
+  health += increment;
+  updateHealthDisplay();
+}
+
+function updateHealthDisplay() {
+  const healthContainer = document.getElementById("health-container");
+  healthContainer.innerHTML = "";
+
+  for (let i = 0; i < health; i++) {
+    const heartImage = document.createElement("img");
+    heartImage.src = "assets/health-point.png";
+    heartImage.alt = "health point";
+    heartImage.className = "health-point";
+    healthContainer.appendChild(heartImage);
   }
 }

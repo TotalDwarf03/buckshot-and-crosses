@@ -4,6 +4,9 @@ class CigarettePack extends HTMLElement {
   }
 
   useItem(emptySlot) {
+    // Add 1 to the player's health when the cigarette pack is used
+    updateHealth(1);
+
     // Remove the cigarette pack from the inventory
     this.remove();
     items[emptySlot] = null;
