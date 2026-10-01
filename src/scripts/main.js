@@ -12,6 +12,8 @@ let currentAimPoint = null;
 const CROSSHAIR_OFFSET_X = 817.5;
 const CROSSHAIR_OFFSET_Y = 210;
 
+let items = Array(3).fill(null);
+
 document.addEventListener("pointerlockchange", () => {
   if (shotgunPickedUp && document.pointerLockElement == null) {
     resetShotgun();
@@ -356,7 +358,7 @@ function resetShotgun() {
   }
 }
 
-function loadShotgun() {
+function loadShotgun(generateItem = true) {
   const shellDropDelay = 220;
   const shellDropDuration = 700;
   const shellSettleDelay = 350;
@@ -365,6 +367,15 @@ function loadShotgun() {
 
   let shells = [];
   reloading = true;
+
+  // Draw a new item
+  if (generateItem) {
+    const newItem = addItem();
+
+    if (newItem) {
+      updateInventoryDisplay(newItem.newItem, newItem.emptySlot);
+    }
+  }
 
   // Load anywhere between 2 and 7 shells into the shotgun, with a random distribution of 'x', 'o', and 'blank' shells
   const shellCount = randint(2, 7);
@@ -387,7 +398,7 @@ function loadShotgun() {
   const uniqueShells = new Set(shells);
   if (!uniqueShells.has("x") || !uniqueShells.has("o")) {
     // If not, reload the shotgun with a new random distribution of shells
-    return loadShotgun();
+    return loadShotgun(generateItem=false);
   }
 
   // Sort the shells so that the display doesn't match the order they will be loaded into the shotgun
@@ -452,4 +463,42 @@ function loadShotgun() {
   }, loadEndDelay);
 
   return shells;
+}
+
+function addItem() {
+  const availableItems = [
+    "handcuffs",
+    "flashlight",
+    "cigarette_pack",
+    "strange_contraption",
+    "expired_vodka",
+  ];
+
+  if (items.every((item) => item !== null)) {
+    return null;
+  }
+
+  const newItem = availableItems[randint(0, availableItems.length - 1)];
+  const emptySlot = items.findIndex((item) => item === null);
+  items[emptySlot] = newItem;
+  return { newItem, emptySlot };
+}
+
+function updateInventoryDisplay(newItem, emptySlot) {
+  const slotToUpdate = document.getElementById(`item-slot-${emptySlot + 1}`);
+  slotToUpdate.innerHTML = "";
+
+  if (newItem) {
+    const itemImage = document.createElement("img");
+    itemImage.src = `assets/items/${newItem}.png`;
+    itemImage.alt = newItem;
+    itemImage.className = "inventory-item";
+    itemImage.onclick = () => useItem(emptySlot);
+    slotToUpdate.appendChild(itemImage);
+  }
+}
+
+function useItem(slotIndex) {
+  items[slotIndex] = null;
+  updateInventoryDisplay(null, slotIndex);
 }
