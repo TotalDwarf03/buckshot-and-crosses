@@ -17,6 +17,16 @@ let items = Array(3).fill(null);
 let health = 3;
 updateHealthDisplay();
 
+let previousShot;
+
+const availableItems = [
+  // "custom-handcuffs",
+  "custom-flashlight",
+  "cigarette-pack",
+  "strange-contraption",
+  "expired-vodka",
+];
+
 document.addEventListener("pointerlockchange", () => {
   if (shotgunPickedUp && document.pointerLockElement == null) {
     resetShotgun();
@@ -177,6 +187,8 @@ function updateCell(cell) {
   }
 
   if (shells[0] !== "blank") {
+    previousShot = { cell, index };
+
     grid[index] = shells[0];
     renderCellMark(cell, shells[0]);
 
@@ -469,14 +481,6 @@ function loadShotgun(generateItem = true) {
 }
 
 function addItem() {
-  const availableItems = [
-    // "custom-handcuffs",
-    // "custom-flashlight",
-    "cigarette-pack",
-    // "strange-contraption",
-    "expired-vodka",
-  ];
-
   if (items.every((item) => item !== null)) {
     return null;
   }
