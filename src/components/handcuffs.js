@@ -1,0 +1,20 @@
+class Handcuffs extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  useItem(emptySlot) {
+    // Remove the handcuffs from the inventory
+    this.remove();
+    items[emptySlot] = null;
+  }
+
+  connectedCallback(emptySlot) {
+    this.innerHTML = `
+            <img src="assets/items/handcuffs.png" alt="Handcuffs" class="inventory-item" />
+        `;
+    this.onclick = () => this.useItem(emptySlot);
+  }
+}
+
+customElements.define("custom-handcuffs", Handcuffs);

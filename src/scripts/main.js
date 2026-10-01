@@ -467,11 +467,11 @@ function loadShotgun(generateItem = true) {
 
 function addItem() {
   const availableItems = [
-    "handcuffs",
-    "flashlight",
-    "cigarette_pack",
-    "strange_contraption",
-    "expired_vodka",
+    "custom-handcuffs",
+    "custom-flashlight",
+    "cigarette-pack",
+    "strange-contraption",
+    "expired-vodka",
   ];
 
   if (items.every((item) => item !== null)) {
@@ -489,16 +489,7 @@ function updateInventoryDisplay(newItem, emptySlot) {
   slotToUpdate.innerHTML = "";
 
   if (newItem) {
-    const itemImage = document.createElement("img");
-    itemImage.src = `assets/items/${newItem}.png`;
-    itemImage.alt = newItem;
-    itemImage.className = "inventory-item";
-    itemImage.onclick = () => useItem(emptySlot);
-    slotToUpdate.appendChild(itemImage);
+    const itemElement = document.createElement(newItem);
+    slotToUpdate.appendChild(itemElement);
   }
-}
-
-function useItem(slotIndex) {
-  items[slotIndex] = null;
-  updateInventoryDisplay(null, slotIndex);
 }
