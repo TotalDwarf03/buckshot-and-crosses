@@ -398,7 +398,7 @@ function loadShotgun(generateItem = true) {
   const uniqueShells = new Set(shells);
   if (!uniqueShells.has("x") || !uniqueShells.has("o")) {
     // If not, reload the shotgun with a new random distribution of shells
-    return loadShotgun(generateItem=false);
+    return loadShotgun((generateItem = false));
   }
 
   // Sort the shells so that the display doesn't match the order they will be loaded into the shotgun
