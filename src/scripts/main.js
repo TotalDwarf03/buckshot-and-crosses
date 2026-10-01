@@ -393,8 +393,8 @@ function loadShotgun(generateItem = true) {
     }
   }
 
-  // Load anywhere between 2 and 7 shells into the shotgun, with a random distribution of 'x', 'o', and 'blank' shells
-  const shellCount = randint(2, 7);
+  // Load anywhere between 2 and 5 shells into the shotgun, with a random distribution of 'x', 'o', and 'blank' shells
+  const shellCount = randint(2, 5);
 
   for (let i = 0; i < shellCount; i++) {
     switch (randint(1, 3)) {
