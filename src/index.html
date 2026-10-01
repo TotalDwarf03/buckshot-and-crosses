@@ -8,13 +8,8 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
-    <!-- Left panel: Shell container -->
-    <div id="shell-container" class="side-panel">
-      <div id="shell-loader"></div>
-    </div>
-
-    <!-- Center panel: Game Grid -->
-    <div id="center-panel">
+    <!-- Base layer: Game Grid -->
+    <div id="base-panel" class="viewport-layer base-layer">
       <div id="game-container">
         <div id="table-backdrop" aria-hidden="true"></div>
         <div id="grid">
@@ -31,22 +26,29 @@
       </div>
     </div>
 
-    <!-- Right panel: Shotgun -->
-    <div id="shotgun-container" class="side-panel">
-      <div id="inventory">
+    <!-- Notifications layer -->
+    <div class="viewport-layer notifications-layer">
+      <div id="shell-container">
+        <div id="shell-loader"></div>
+      </div>
+    </div>
+
+    <!-- HUD layer -->
+    <div class="viewport-layer hud-layer">
+      <div id="shotgun-container">
         <img
           src="assets/shotgun.png"
           alt="Shotgun"
           id="shotgun-image"
           onclick="pickupShotgun()"
         />
-        <div id="shotgun-warning">[Point of no return]</div>
+        <div id="shotgun-warning">Point of no return</div>
       </div>
     </div>
 
     <img src="assets/crosshair.png" alt="Crosshair" id="crosshair" hidden />
     <div id="aiming-help">
-      [Press SPACE to pump shell]<br />[Press ESC to cancel aiming]
+      Press SPACE to pump shell<br />Press ESC to cancel aiming
     </div>
 
     <div id="vignette" hidden></div>

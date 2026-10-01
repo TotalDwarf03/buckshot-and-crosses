@@ -13,6 +13,7 @@ The curriculum for the module can be found here: [IS3S664 - Advanced Internet an
 - [Buckshot and Crosses](#buckshot-and-crosses)
   - [Contents](#contents)
   - [Getting Started](#getting-started)
+  - [Disclaimer](#disclaimer)
   - [About the Game](#about-the-game)
   - [Documentation](#documentation)
   - [Linting and Formatting](#linting-and-formatting)
@@ -24,6 +25,12 @@ The curriculum for the module can be found here: [IS3S664 - Advanced Internet an
 ## Getting Started
 
 To get started with the project, you can simply clone the repository and open the `index.html` file in your web browser.
+
+## Disclaimer
+
+**Please Note:** This game does not support mobile devices. It is designed to be played on a desktop or laptop computer with a keyboard and mouse.
+
+Although the layout is responsive for smaller screens, the game mechanics and controls are not designed for touch input. For the best experience, please play the game on a device with a physical keyboard and mouse.
 
 ## About the Game
 
@@ -71,7 +78,7 @@ This will lint all Markdown files in the project and automatically fix any issue
 AI has been used in this project to assist in the following areas:
 
 - Art and graphics generation (i.e. game assets, branding, etc.)
-- CSS styling and layout suggestions
+- CSS styling and layout **suggestions** - implemented by hand.
 - Animations and transitions
 
 The functionality of the game has been implemented by hand, alongside brainstorming and planning of the game mechanics, rules and logic.

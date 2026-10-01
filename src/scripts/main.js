@@ -44,13 +44,13 @@ function randomUnit(min, max, unit, precision = 2) {
 
 function createShellMotionProfile() {
   return {
-    dropX: randomUnit(-1.8, 1.8, "vh"),
+    dropX: randomUnit(-1.8, 1.8, "rem"),
     dropRotate: randomUnit(-13, 13, "deg", 1),
-    restX: randomUnit(-0.4, 0.4, "vh"),
-    restY: randomUnit(-0.08, 0.08, "vh"),
+    restX: randomUnit(-0.4, 0.4, "rem"),
+    restY: randomUnit(-0.08, 0.08, "rem"),
     restRotate: randomUnit(-2.2, 2.2, "deg", 1),
-    loadX: randomUnit(7.6, 9.6, "vh"),
-    loadY: randomUnit(-1.6, -0.55, "vh"),
+    loadX: randomUnit(7.6, 9.6, "rem"),
+    loadY: randomUnit(-1.6, -0.55, "rem"),
     loadRotate: randomUnit(10, 19, "deg", 1),
   };
 }
@@ -245,7 +245,6 @@ function pickupShotgun() {
   document.body.classList.add("aiming");
   document.getElementById("shell-container").classList.add("aiming");
   document.getElementById("shotgun-container").classList.add("aiming");
-  document.getElementById("inventory").classList.add("aiming");
 
   // Set the initial aim position to the center of the grid
   const gridBounds = getGridBounds();
@@ -334,7 +333,6 @@ function resetShotgun() {
   document.body.classList.remove("aiming");
   document.getElementById("shell-container").classList.remove("aiming");
   document.getElementById("shotgun-container").classList.remove("aiming");
-  document.getElementById("inventory").classList.remove("aiming");
 
   // Remove listeners for mouse movement and click events
   if (crosshairListener) {
