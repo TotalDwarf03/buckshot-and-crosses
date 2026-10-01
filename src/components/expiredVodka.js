@@ -13,7 +13,7 @@ class ExpiredVodka extends HTMLElement {
 
     // Remove the expired vodka from the inventory
     this.remove();
-    items[emptySlot] = null;
+    items.fill(null, emptySlot, emptySlot);
   }
 
   connectedCallback(emptySlot) {

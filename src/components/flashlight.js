@@ -4,9 +4,14 @@ class Flashlight extends HTMLElement {
   }
 
   useItem(emptySlot) {
+    // Reveal current shell to player
+    pumpShotgun(true);
+
     // Remove the flashlight from the inventory
     this.remove();
-    items[emptySlot] = null;
+    items.fill(null, emptySlot, emptySlot);
+
+    console.log(items);
   }
 
   connectedCallback(emptySlot) {

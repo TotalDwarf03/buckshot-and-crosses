@@ -128,18 +128,19 @@ function createShellElement(shellType, motionProfile) {
   return img;
 }
 
-function pumpShotgun() {
-  if (!shotgunPickedUp || reloading || shells.length === 0) {
-    return;
-  }
-
+function pumpShotgun(viewOnly = false) {
   pumpAnimating = true;
+  let currentShell;
 
-  // Remove the current shell and reveal it to the player
-  const currentShell = shells.shift();
+  if (!viewOnly) {
+    // Remove the current shell and reveal it to the player
+    currentShell = shells.shift();
 
-  // Reset the shotgun and animate the shell being ejected from the shotgun
-  resetShotgun();
+    // Reset the shotgun and animate the shell being ejected from the shotgun
+    resetShotgun();
+  } else {
+    currentShell = shells[0];
+  }
 
   // Show the shell in the shell loader
   const shellLoader = document.getElementById("shell-loader");

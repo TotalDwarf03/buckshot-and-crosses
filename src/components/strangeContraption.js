@@ -28,7 +28,7 @@ class StrangeContraption extends HTMLElement {
 
     // Remove the strange contraption from the inventory
     this.remove();
-    items[emptySlot] = null;
+    items.fill(null, emptySlot, emptySlot);
   }
 
   connectedCallback(emptySlot) {

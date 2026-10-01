@@ -9,7 +9,7 @@ class CigarettePack extends HTMLElement {
 
     // Remove the cigarette pack from the inventory
     this.remove();
-    items[emptySlot] = null;
+    items.fill(null, emptySlot, emptySlot);
   }
 
   connectedCallback(emptySlot) {
