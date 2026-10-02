@@ -36,9 +36,11 @@ const elements = {
   shellLoader: document.getElementById("shell-loader"),
   shotgunContainer: document.getElementById("shotgun-container"),
   shotgunImage: document.getElementById("shotgun-image"),
+  healthContainer: document.getElementById("health-container"),
   healthBar: document.getElementById("health-bar"),
   crosshair: document.getElementById("crosshair"),
   vignette: document.getElementById("vignette"),
+  inventory: document.getElementById("inventory"),
   inventorySlots: [
     document.getElementById("item-slot-1"),
     document.getElementById("item-slot-2"),
@@ -51,7 +53,7 @@ let health = 3;
 let previousShot;
 
 const availableItems = [
-  // "custom-handcuffs",
+  "custom-handcuffs",
   "custom-flashlight",
   "cigarette-pack",
   "strange-contraption",

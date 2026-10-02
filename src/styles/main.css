@@ -280,7 +280,9 @@ body {
 }
 
 #shell-container.aiming,
-#shotgun-container.aiming {
+#shotgun-container.aiming,
+#inventory.aiming,
+#health-container.aiming {
   opacity: 0;
   pointer-events: none;
 }

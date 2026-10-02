@@ -13,6 +13,8 @@ function setAimingMode(isAiming) {
   document.body.classList.toggle("aiming", isAiming);
   elements.shellContainer.classList.toggle("aiming", isAiming);
   elements.shotgunContainer.classList.toggle("aiming", isAiming);
+  elements.healthContainer.classList.toggle("aiming", isAiming);
+  elements.inventory.classList.toggle("aiming", isAiming);
 }
 
 function setAimPosition(clientX, clientY) {
