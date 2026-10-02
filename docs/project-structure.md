@@ -8,13 +8,13 @@ This file outlines the structure of the project including how code is organised 
 buckshot-and-crosses/
 ├── docs/                  # Documentation files
 └── src/                   # Source files
-	├── index.html         # Main HTML file
-	├── assets/            # Static assets
-	├── components/        # Custom elements
-	├── scripts/           # JavaScript files
-	│   └── ...
-	└── styles/            # CSS files
-		└── ...
+ ├── index.html         # Main HTML file
+ ├── assets/            # Static assets
+ ├── components/        # Custom elements
+ ├── scripts/           # JavaScript files
+ │   └── ...
+ └── styles/            # CSS files
+  └── ...
 ```
 
 ## index.html
