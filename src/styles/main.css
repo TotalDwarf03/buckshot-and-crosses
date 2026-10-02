@@ -98,10 +98,8 @@ body {
 }
 
 .health-point {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: rgba(255, 0, 0, 0.8);
+  width: 5rem;
+  height: 5rem;
 }
 
 /* Game Board Styling */
@@ -171,8 +169,8 @@ body {
   display: block;
   width: auto;
   height: auto;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 80%;
+  max-height: 80%;
   cursor: pointer;
   transform-origin: bottom center;
   transition: transform 0.2s ease;

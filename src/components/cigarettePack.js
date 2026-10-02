@@ -14,7 +14,7 @@ class CigarettePack extends HTMLElement {
 
   connectedCallback(emptySlot) {
     this.innerHTML = `
-            <img src="assets/items/cigarette_pack.png" alt="Cigarette Pack" class="inventory-item" />
+            <img src="assets/items/cigarette-pack.png" alt="Cigarette Pack" class="inventory-item" />
         `;
     this.onclick = () => this.useItem(emptySlot);
   }

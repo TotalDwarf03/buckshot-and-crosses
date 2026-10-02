@@ -503,19 +503,20 @@ function updateInventoryDisplay(newItem, emptySlot) {
 }
 
 function updateHealth(increment) {
-  health += increment;
+  health = Math.max(0, Math.min(health + increment, 5));
   updateHealthDisplay();
 }
 
 function updateHealthDisplay() {
-  const healthContainer = document.getElementById("health-container");
-  healthContainer.innerHTML = "";
+  const healthBar = document.getElementById("health-bar");
+  healthBar.innerHTML = "";
 
-  for (let i = 0; i < health; i++) {
+  // Display the health points up to a maximum of 5
+  for (let i = 0; i < (health || 5); i++) {
     const heartImage = document.createElement("img");
     heartImage.src = "assets/health-point.png";
     heartImage.alt = "health point";
     heartImage.className = "health-point";
-    healthContainer.appendChild(heartImage);
+    healthBar.appendChild(heartImage);
   }
 }

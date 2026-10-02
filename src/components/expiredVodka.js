@@ -18,7 +18,7 @@ class ExpiredVodka extends HTMLElement {
 
   connectedCallback(emptySlot) {
     this.innerHTML = `
-            <img src="assets/items/expired_vodka.png" alt="Expired Vodka" class="inventory-item" />
+            <img src="assets/items/expired-vodka.png" alt="Expired Vodka" class="inventory-item" />
         `;
     this.onclick = () => this.useItem(emptySlot);
   }

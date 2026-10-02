@@ -33,7 +33,7 @@ class StrangeContraption extends HTMLElement {
 
   connectedCallback(emptySlot) {
     this.innerHTML = `
-            <img src="assets/items/strange_contraption.png" alt="Strange Contraption" class="inventory-item" />
+            <img src="assets/items/strange-contraption.png" alt="Strange Contraption" class="inventory-item" />
         `;
     this.onclick = () => this.useItem(emptySlot);
   }
