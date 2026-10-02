@@ -8,6 +8,7 @@
   --color-vignette: rgba(0, 0, 0, 0.8);
   --size-health-point: 5rem;
   --size-inventory-slot: 5rem;
+  --max-health: 5;
 }
 
 html,
@@ -107,6 +108,9 @@ body {
   gap: 0.5rem;
   z-index: 21;
   pointer-events: auto;
+  width: calc((var(--size-health-point) * var(--max-health)) + (0.5rem * (var(--max-health) - 1)));
+  border: 2px solid var(--color-ui);
+  padding: 0.2rem;
 }
 
 .health-point {
