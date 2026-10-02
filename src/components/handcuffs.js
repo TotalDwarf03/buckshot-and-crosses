@@ -1,19 +1,16 @@
-class Handcuffs extends HTMLElement {
-  constructor() {
-    super();
+class Handcuffs extends InventoryItemBase {
+  get imageSource() {
+    return "assets/items/handcuffs.png";
   }
 
-  useItem(emptySlot) {
+  get altText() {
+    return "Handcuffs";
+  }
+
+  useItem() {
     // Remove the handcuffs from the inventory
     this.remove();
-    items[emptySlot] = null;
-  }
-
-  connectedCallback(emptySlot) {
-    this.innerHTML = `
-            <img src="assets/items/handcuffs.png" alt="Handcuffs" class="inventory-item" />
-        `;
-    this.onclick = () => this.useItem(emptySlot);
+    this.clearSlot();
   }
 }
 

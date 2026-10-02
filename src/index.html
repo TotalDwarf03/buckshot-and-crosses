@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="styles/main.css" />
 
+    <script src="components/inventoryItemBase.js"></script>
     <script src="components/cigarettePack.js"></script>
     <script src="components/expiredVodka.js"></script>
     <script src="components/flashlight.js"></script>
@@ -19,15 +20,15 @@
       <div id="game-container">
         <div id="table-backdrop" aria-hidden="true"></div>
         <div id="grid">
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
-          <div class="grid-item" onclick="updateCell(this)"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
         </div>
       </div>
     </div>
@@ -46,12 +47,7 @@
     <!-- HUD layer -->
     <div class="viewport-layer hud-layer">
       <div id="shotgun-container">
-        <img
-          src="assets/shotgun.png"
-          alt="Shotgun"
-          id="shotgun-image"
-          onclick="pickupShotgun()"
-        />
+        <img src="assets/shotgun.png" alt="Shotgun" id="shotgun-image" />
         <div id="shotgun-warning">Point of no return</div>
       </div>
 

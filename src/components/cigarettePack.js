@@ -1,22 +1,19 @@
-class CigarettePack extends HTMLElement {
-  constructor() {
-    super();
+class CigarettePack extends InventoryItemBase {
+  get imageSource() {
+    return "assets/items/cigarette-pack.png";
   }
 
-  useItem(emptySlot) {
+  get altText() {
+    return "Cigarette Pack";
+  }
+
+  useItem() {
     // Add 1 to the player's health when the cigarette pack is used
     updateHealth(1);
 
     // Remove the cigarette pack from the inventory
     this.remove();
-    items.fill(null, emptySlot, emptySlot);
-  }
-
-  connectedCallback(emptySlot) {
-    this.innerHTML = `
-            <img src="assets/items/cigarette-pack.png" alt="Cigarette Pack" class="inventory-item" />
-        `;
-    this.onclick = () => this.useItem(emptySlot);
+    this.clearSlot();
   }
 }
 

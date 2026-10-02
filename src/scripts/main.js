@@ -11,11 +11,32 @@ let currentAimPoint = null;
 
 const CROSSHAIR_OFFSET_X = 817.5;
 const CROSSHAIR_OFFSET_Y = 210;
+const MAX_HEALTH = 5;
+const SHELL_TYPES = ["x", "o", "blank"];
+const SHELL_PRIORITY = { x: 1, o: 2, blank: 3 };
+const SHELL_TIMINGS = {
+  dropDelay: 220,
+  dropDuration: 700,
+  settleDelay: 350,
+  loadDelay: 165,
+  loadDuration: 340,
+};
+
+const elements = {
+  grid: document.getElementById("grid"),
+  gameContainer: document.getElementById("game-container"),
+  shellContainer: document.getElementById("shell-container"),
+  shellLoader: document.getElementById("shell-loader"),
+  shotgunContainer: document.getElementById("shotgun-container"),
+  shotgunImage: document.getElementById("shotgun-image"),
+  healthBar: document.getElementById("health-bar"),
+  crosshair: document.getElementById("crosshair"),
+  vignette: document.getElementById("vignette"),
+};
 
 let items = Array(3).fill(null);
 
 let health = 3;
-updateHealthDisplay();
 
 let previousShot;
 
@@ -27,23 +48,41 @@ const availableItems = [
   "expired-vodka",
 ];
 
-document.addEventListener("pointerlockchange", () => {
-  if (shotgunPickedUp && document.pointerLockElement == null) {
-    resetShotgun();
-  }
-});
-
-document.addEventListener("keydown", (event) => {
-  if (shotgunPickedUp && event.key === "Escape") {
-    resetShotgun();
-  }
-});
-
 window.addEventListener("DOMContentLoaded", () => {
+  setupGlobalEventHandlers();
+  setupInteractionHandlers();
+  updateHealthDisplay();
+
   setTimeout(() => {
     shells = loadShotgun();
   }, 1000);
 });
+
+function setupGlobalEventHandlers() {
+  document.addEventListener("pointerlockchange", () => {
+    if (shotgunPickedUp && document.pointerLockElement == null) {
+      resetShotgun();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (shotgunPickedUp && event.key === "Escape") {
+      resetShotgun();
+    }
+  });
+}
+
+function setupInteractionHandlers() {
+  elements.grid.addEventListener("click", (event) => {
+    const targetCell = event.target.closest(".grid-item");
+
+    if (targetCell) {
+      updateCell(targetCell);
+    }
+  });
+
+  elements.shotgunImage.addEventListener("click", pickupShotgun);
+}
 
 function randint(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -75,18 +114,26 @@ function clamp(value, min, max) {
 }
 
 function getGridBounds() {
-  return document.getElementById("grid").getBoundingClientRect();
+  return elements.grid.getBoundingClientRect();
+}
+
+function setAimingMode(isAiming) {
+  elements.crosshair.hidden = !isAiming;
+  elements.vignette.hidden = !isAiming;
+  elements.gameContainer.classList.toggle("aiming", isAiming);
+  document.body.classList.toggle("aiming", isAiming);
+  elements.shellContainer.classList.toggle("aiming", isAiming);
+  elements.shotgunContainer.classList.toggle("aiming", isAiming);
 }
 
 function setAimPosition(clientX, clientY) {
   const gridBounds = getGridBounds();
-  const crosshair = document.getElementById("crosshair");
   const aimX = clamp(clientX, gridBounds.left, gridBounds.right);
   const aimY = clamp(clientY, gridBounds.top, gridBounds.bottom);
 
   currentAimPoint = { x: aimX, y: aimY };
-  crosshair.style.left = `${aimX - CROSSHAIR_OFFSET_X}px`;
-  crosshair.style.top = `${aimY - CROSSHAIR_OFFSET_Y}px`;
+  elements.crosshair.style.left = `${aimX - CROSSHAIR_OFFSET_X}px`;
+  elements.crosshair.style.top = `${aimY - CROSSHAIR_OFFSET_Y}px`;
 }
 
 function getAimedGridCell() {
@@ -143,7 +190,7 @@ function pumpShotgun(viewOnly = false) {
   }
 
   // Show the shell in the shell loader
-  const shellLoader = document.getElementById("shell-loader");
+  const shellLoader = elements.shellLoader;
   shellLoader.innerHTML = "";
 
   const motionProfile = createShellMotionProfile();
@@ -216,18 +263,7 @@ function updateCell(cell) {
 }
 
 function checkWin() {
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (const combination of winningCombinations) {
+  for (const combination of WINNING_COMBINATIONS) {
     const [a, b, c] = combination;
 
     const gridStatus = [grid[a], grid[b], grid[c]];
@@ -250,19 +286,7 @@ function pickupShotgun() {
   if (shotgunPickedUp || reloading || pumpAnimating) return;
 
   shotgunPickedUp = true;
-  const vignette = document.getElementById("vignette");
-  const gameContainer = document.getElementById("game-container");
-
-  // Make a crosshair appear, following the mouse cursor
-  const crosshair = document.getElementById("crosshair");
-  crosshair.hidden = false;
-
-  // Show vignette and apply zoom/shake effects
-  vignette.hidden = false;
-  gameContainer.classList.add("aiming");
-  document.body.classList.add("aiming");
-  document.getElementById("shell-container").classList.add("aiming");
-  document.getElementById("shotgun-container").classList.add("aiming");
+  setAimingMode(true);
 
   // Set the initial aim position to the center of the grid
   const gridBounds = getGridBounds();
@@ -337,20 +361,7 @@ function pickupShotgun() {
 function resetShotgun() {
   shotgunPickedUp = false;
   currentAimPoint = null;
-
-  const vignette = document.getElementById("vignette");
-  const gameContainer = document.getElementById("game-container");
-
-  // Hide the crosshair
-  const crosshair = document.getElementById("crosshair");
-  crosshair.hidden = true;
-
-  // Hide vignette and remove zoom/shake effects
-  vignette.hidden = true;
-  gameContainer.classList.remove("aiming");
-  document.body.classList.remove("aiming");
-  document.getElementById("shell-container").classList.remove("aiming");
-  document.getElementById("shotgun-container").classList.remove("aiming");
+  setAimingMode(false);
 
   // Remove listeners for mouse movement and click events
   if (crosshairListener) {
@@ -375,12 +386,6 @@ function resetShotgun() {
 }
 
 function loadShotgun(generateItem = true) {
-  const shellDropDelay = 220;
-  const shellDropDuration = 700;
-  const shellSettleDelay = 350;
-  const shellLoadDelay = 165;
-  const shellLoadDuration = 340;
-
   let shells = [];
   reloading = true;
 
@@ -396,19 +401,10 @@ function loadShotgun(generateItem = true) {
   // Load anywhere between 2 and 5 shells into the shotgun, with a random distribution of 'x', 'o', and 'blank' shells
   const shellCount = randint(2, 5);
 
-  for (let i = 0; i < shellCount; i++) {
-    switch (randint(1, 3)) {
-      case 1:
-        shells.push("x");
-        break;
-      case 2:
-        shells.push("o");
-        break;
-      case 3:
-        shells.push("blank");
-        break;
-    }
-  }
+  shells = Array.from(
+    { length: shellCount },
+    () => SHELL_TYPES[randint(0, SHELL_TYPES.length - 1)],
+  );
 
   // Verify that the shotgun has at least 1 x and 1 o shell
   const uniqueShells = new Set(shells);
@@ -418,16 +414,15 @@ function loadShotgun(generateItem = true) {
   }
 
   // Sort the shells so that the display doesn't match the order they will be loaded into the shotgun
-  const shellPriority = { x: 1, o: 2, blank: 3 };
   const sortedShells = [...shells].sort(
-    (a, b) => shellPriority[a] - shellPriority[b],
+    (a, b) => SHELL_PRIORITY[a] - SHELL_PRIORITY[b],
   );
   const shellMotionProfiles = sortedShells.map(() =>
     createShellMotionProfile(),
   );
 
   // Display the shells in the shell loader
-  const shellLoader = document.getElementById("shell-loader");
+  const shellLoader = elements.shellLoader;
 
   shellLoader.innerHTML = "";
 
@@ -442,17 +437,17 @@ function loadShotgun(generateItem = true) {
       const reverseIndex = sortedShells.length - 1 - index;
       const shellImage = shellLoader.children[reverseIndex];
       shellImage.classList.add("is-visible");
-    }, index * shellDropDelay);
+    }, index * SHELL_TIMINGS.dropDelay);
   });
 
   const loadStartDelay =
-    (sortedShells.length - 1) * shellDropDelay +
-    shellDropDuration +
-    shellSettleDelay;
+    (sortedShells.length - 1) * SHELL_TIMINGS.dropDelay +
+    SHELL_TIMINGS.dropDuration +
+    SHELL_TIMINGS.settleDelay;
   const loadEndDelay =
     loadStartDelay +
-    (sortedShells.length - 1) * shellLoadDelay +
-    shellLoadDuration;
+    (sortedShells.length - 1) * SHELL_TIMINGS.loadDelay +
+    SHELL_TIMINGS.loadDuration;
 
   // Animate the shells being loaded into the shotgun after they finish dropping into the tray.
   setTimeout(() => {
@@ -465,7 +460,7 @@ function loadShotgun(generateItem = true) {
         const shellImage = shellLoader.children[reverseIndex];
         shellImage.classList.remove("is-visible");
         shellImage.classList.add("is-loading");
-      }, index * shellLoadDelay);
+      }, index * SHELL_TIMINGS.loadDelay);
     });
   }, loadStartDelay);
 
@@ -498,17 +493,18 @@ function updateInventoryDisplay(newItem, emptySlot) {
 
   if (newItem) {
     const itemElement = document.createElement(newItem);
+    itemElement.dataset.slot = String(emptySlot);
     slotToUpdate.appendChild(itemElement);
   }
 }
 
 function updateHealth(increment) {
-  health = Math.max(0, Math.min(health + increment, 5));
+  health = Math.max(0, Math.min(health + increment, MAX_HEALTH));
   updateHealthDisplay();
 }
 
 function updateHealthDisplay() {
-  const healthBar = document.getElementById("health-bar");
+  const healthBar = elements.healthBar;
   healthBar.innerHTML = "";
 
   // Display the current health points up to a maximum of 5
@@ -520,3 +516,14 @@ function updateHealthDisplay() {
     healthBar.appendChild(heartImage);
   }
 }
+
+const WINNING_COMBINATIONS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];

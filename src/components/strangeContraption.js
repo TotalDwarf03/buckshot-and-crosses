@@ -1,9 +1,13 @@
-class StrangeContraption extends HTMLElement {
-  constructor() {
-    super();
+class StrangeContraption extends InventoryItemBase {
+  get imageSource() {
+    return "assets/items/strange-contraption.png";
   }
 
-  useItem(emptySlot) {
+  get altText() {
+    return "Strange Contraption";
+  }
+
+  useItem() {
     // 60% revert previous shot, 30% do nothing, 10% blow up
     const roll = randint(1, 100);
 
@@ -28,14 +32,7 @@ class StrangeContraption extends HTMLElement {
 
     // Remove the strange contraption from the inventory
     this.remove();
-    items.fill(null, emptySlot, emptySlot);
-  }
-
-  connectedCallback(emptySlot) {
-    this.innerHTML = `
-            <img src="assets/items/strange-contraption.png" alt="Strange Contraption" class="inventory-item" />
-        `;
-    this.onclick = () => this.useItem(emptySlot);
+    this.clearSlot();
   }
 }
 

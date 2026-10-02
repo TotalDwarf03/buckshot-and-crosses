@@ -1,10 +1,22 @@
+/* Shared Tokens */
+
+:root {
+  --color-background: #000;
+  --color-ui: rgba(255, 255, 255, 0.63);
+  --color-ui-strong: rgba(245, 238, 220, 0.96);
+  --color-panel: rgba(0, 0, 0, 0.5);
+  --color-vignette: rgba(0, 0, 0, 0.8);
+  --size-health-point: 5rem;
+  --size-inventory-slot: 5rem;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: var(--color-background);
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
@@ -98,8 +110,8 @@ body {
 }
 
 .health-point {
-  width: 5rem;
-  height: 5rem;
+  width: var(--size-health-point);
+  height: var(--size-health-point);
 }
 
 /* Game Board Styling */
@@ -135,7 +147,7 @@ body {
 
 .grid-item {
   background: transparent;
-  color: rgba(245, 238, 220, 0.96);
+  color: var(--color-ui-strong);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,7 +195,7 @@ body {
 
 #shotgun-warning {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.63);
+  color: var(--color-ui);
   text-align: center;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -211,7 +223,7 @@ body {
   font-size: 0.875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.63);
+  color: var(--color-ui);
   opacity: 0;
   pointer-events: none;
   z-index: 999;
@@ -232,12 +244,12 @@ body {
 }
 
 .item-slot {
-  width: 5rem;
-  height: 5rem;
-  border: 2px solid rgba(255, 255, 255, 0.63);
+  width: var(--size-inventory-slot);
+  height: var(--size-inventory-slot);
+  border: 2px solid var(--color-ui);
   border-radius: 0.25rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: var(--color-panel);
+  color: var(--color-ui-strong);
 }
 
 .item-slot:hover {
@@ -265,11 +277,11 @@ body {
   background: radial-gradient(
     ellipse at center,
     transparent 0%,
-    rgba(0, 0, 0, 0.8) 100%
+    var(--color-vignette) 100%
   );
 }
 
-/* Animations (AI Generated) */
+/* Animations */
 
 /* Shake animation for aiming stress */
 @keyframes shake {
