@@ -414,7 +414,7 @@ function loadShotgun(generateItem = true) {
   const uniqueShells = new Set(shells);
   if (!uniqueShells.has("x") || !uniqueShells.has("o")) {
     // If not, reload the shotgun with a new random distribution of shells
-    return loadShotgun((generateItem = false));
+    return loadShotgun(false);
   }
 
   // Sort the shells so that the display doesn't match the order they will be loaded into the shotgun
@@ -511,8 +511,8 @@ function updateHealthDisplay() {
   const healthBar = document.getElementById("health-bar");
   healthBar.innerHTML = "";
 
-  // Display the health points up to a maximum of 5
-  for (let i = 0; i < (health || 5); i++) {
+  // Display the current health points up to a maximum of 5
+  for (let i = 0; i < health; i++) {
     const heartImage = document.createElement("img");
     heartImage.src = "assets/health-point.png";
     heartImage.alt = "health point";
