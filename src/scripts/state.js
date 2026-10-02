@@ -48,6 +48,8 @@ const elements = {
   ],
 };
 
+const itemsPerRound = 2;
+
 let items = Array(3).fill(null);
 let health = 3;
 let previousShot;

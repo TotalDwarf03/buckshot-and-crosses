@@ -201,7 +201,9 @@ function resetShotgun() {
 function loadShotgun(generateItem = true) {
   reloading = true;
 
-  addItem(generateItem);
+  for (let i = 0; i < itemsPerRound; i++) {
+    addItem(generateItem);
+  }
 
   const shells = createRandomShellSet();
 
