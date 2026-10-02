@@ -265,6 +265,36 @@ body {
   cursor: pointer;
 }
 
+/* State Styling */
+
+.viewport-layer.aiming {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#shell-container.aiming,
+#shotgun-container.aiming {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.aiming,
+body:has(#shotgun-image:hover) {
+  animation: shake 0.1s infinite;
+}
+
+body.aiming {
+  cursor: none;
+}
+
+body.aiming #aiming-help {
+  opacity: 1;
+}
+
+#game-container.aiming {
+  animation: tunnel-vision 0.3s ease-out forwards;
+}
+
 /* Vignette effect */
 
 #vignette {
@@ -420,34 +450,4 @@ body {
   75% {
     transform: translateX(0.18rem);
   }
-}
-
-/* Aiming State */
-
-.viewport-layer.aiming {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#shell-container.aiming,
-#shotgun-container.aiming {
-  opacity: 0;
-  pointer-events: none;
-}
-
-body.aiming,
-body:has(#shotgun-image:hover) {
-  animation: shake 0.1s infinite;
-}
-
-body.aiming {
-  cursor: none;
-}
-
-body.aiming #aiming-help {
-  opacity: 1;
-}
-
-#game-container.aiming {
-  animation: tunnel-vision 0.3s ease-out forwards;
 }
