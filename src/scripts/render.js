@@ -6,15 +6,21 @@ function getGridBounds() {
   return elements.grid.getBoundingClientRect();
 }
 
+function hideHUD(hide) {
+  elements.shellContainer.classList.toggle("aiming", hide);
+  elements.shotgunContainer.classList.toggle("aiming", hide);
+  elements.healthContainer.classList.toggle("aiming", hide);
+  elements.inventory.classList.toggle("aiming", hide);
+}
+
 function setAimingMode(isAiming) {
   elements.crosshair.hidden = !isAiming;
   elements.vignette.hidden = !isAiming;
   elements.gameContainer.classList.toggle("aiming", isAiming);
   document.body.classList.toggle("aiming", isAiming);
-  elements.shellContainer.classList.toggle("aiming", isAiming);
-  elements.shotgunContainer.classList.toggle("aiming", isAiming);
-  elements.healthContainer.classList.toggle("aiming", isAiming);
-  elements.inventory.classList.toggle("aiming", isAiming);
+  elements.dealerContainer.classList.toggle("aiming", isAiming);
+
+  hideHUD(isAiming);
 }
 
 function setAimPosition(clientX, clientY) {
@@ -108,4 +114,84 @@ function updateHealthDisplay() {
     heartImage.className = "health-point";
     healthBar.appendChild(heartImage);
   }
+}
+
+function animateDealerText(
+  message,
+  typingDuration = 2500,
+  postTypingPause = 300,
+  fadeOutDuration = 500,
+) {
+  const dealerText = elements.dealerText;
+  const dealerContainer = elements.dealerContainer;
+
+  // Reset animations and classes
+  dealerText.classList.remove("animating");
+  dealerContainer.classList.remove("buzzing");
+  dealerText.textContent = "";
+
+  const firstBuzzDuration = 400; // First buzz
+  const pauseDuration = 200; // Pause between buzzes
+  const secondBuzzDuration = 400; // Second buzz
+
+  // Start first buzz (0-500ms)
+  dealerContainer.classList.add("buzzing");
+
+  // Stop first buzz and start pause
+  setTimeout(() => {
+    dealerContainer.classList.remove("buzzing");
+  }, firstBuzzDuration);
+
+  // Start second buzz after pause (800-1300ms)
+  setTimeout(() => {
+    dealerContainer.classList.add("buzzing");
+  }, firstBuzzDuration + pauseDuration);
+
+  // Stop second buzz and start typing
+  setTimeout(
+    () => {
+      dealerContainer.classList.remove("buzzing");
+      dealerText.textContent = "";
+      dealerText.classList.add("typing");
+
+      // Calculate character delay for typewriter effect
+      const charDelay = typingDuration / message.length;
+
+      // Typewriter effect: reveal one character at a time
+      message.split("").forEach((char, index) => {
+        setTimeout(() => {
+          dealerText.textContent += char;
+        }, index * charDelay);
+      });
+    },
+    firstBuzzDuration + pauseDuration + secondBuzzDuration,
+  );
+
+  // Start fade out after typing completes with a short pause
+  setTimeout(
+    () => {
+      dealerText.classList.add("animating");
+    },
+    firstBuzzDuration +
+      pauseDuration +
+      secondBuzzDuration +
+      typingDuration +
+      postTypingPause,
+  );
+
+  // Reset after everything completes
+  setTimeout(
+    () => {
+      dealerText.textContent = "";
+      dealerText.classList.remove("animating");
+      dealerContainer.classList.remove("buzzing");
+      dealerText.classList.remove("typing");
+    },
+    firstBuzzDuration +
+      pauseDuration +
+      secondBuzzDuration +
+      typingDuration +
+      postTypingPause +
+      fadeOutDuration,
+  );
 }

@@ -46,6 +46,8 @@ const elements = {
     document.getElementById("item-slot-2"),
     document.getElementById("item-slot-3"),
   ],
+  dealerContainer: document.getElementById("dealer-container"),
+  dealerText: document.getElementById("dealer-text"),
 };
 
 const itemsPerRound = 2;

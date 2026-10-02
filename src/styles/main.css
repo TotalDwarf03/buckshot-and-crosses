@@ -52,6 +52,13 @@ body {
   z-index: 30;
 }
 
+.dealer-layer {
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  pointer-events: none;
+}
+
 /* Shell Styling */
 
 #shell-container {
@@ -63,6 +70,9 @@ body {
   padding: 1rem 1.5rem 1rem 0;
   overflow: hidden;
   pointer-events: auto;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
 }
 
 #shell-loader {
@@ -114,6 +124,9 @@ body {
   );
   border: 2px solid var(--color-ui);
   padding: 0.2rem;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
 }
 
 .health-point {
@@ -182,6 +195,9 @@ body {
   height: 100%;
   padding: 1rem 1.5rem 1.5rem 0;
   pointer-events: auto;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
 }
 
 #shotgun-image {
@@ -248,6 +264,9 @@ body {
   transform: translateX(-50%);
   z-index: 31;
   pointer-events: auto;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
 }
 
 .item-slot {
@@ -272,6 +291,130 @@ body {
   cursor: pointer;
 }
 
+/* Dealer Styling */
+
+#dealer-text {
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.25rem;
+  color: var(--color-ui-strong);
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.8);
+  min-height: 1.5rem;
+  display: block;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#dealer-text.typing {
+  animation: dealer-shake 0.1s linear infinite;
+}
+
+#dealer-text.animating {
+  animation: dealer-text-fade-out 0.5s ease-out forwards;
+}
+
+#dealer-container {
+  position: relative;
+  width: min(92%, 64rem);
+  aspect-ratio: 3 / 2;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+  pointer-events: none;
+}
+
+/* Hide HUD elements by default */
+body.hud-hidden #shell-container,
+body.hud-hidden #shotgun-container,
+body.hud-hidden #inventory,
+body.hud-hidden #health-container {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+}
+
+#dealer-container.buzzing {
+  animation: container-shake 0.1s linear infinite;
+}
+
+#dealer-image {
+  position: absolute;
+  top: 18%;
+  left: 15%;
+  width: min(8rem, 22%);
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Waiver Styling */
+
+#waiver {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(100vh + 3rem)) scale(0.2);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 41;
+  pointer-events: auto;
+}
+
+#waiver.is-visible {
+  animation: waiver-expand-in 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#waiver.is-exiting {
+  animation: waiver-shrink-out 0.32s ease-in forwards;
+  pointer-events: none;
+}
+
+#waiver-image {
+  width: min(20rem, 80%);
+  height: auto;
+  object-fit: contain;
+}
+
+#waiver-image:hover {
+  animation: shake 0.1s infinite;
+}
+
+@keyframes waiver-expand-in {
+  0% {
+    transform: translate(-50%, calc(100vh + 3rem)) scale(0.2);
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  85% {
+    transform: translate(-50%, -52%) scale(1.03);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes waiver-shrink-out {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -38%) scale(0.88);
+    opacity: 0;
+  }
+}
+
 /* State Styling */
 
 .viewport-layer.aiming {
@@ -282,13 +425,19 @@ body {
 #shell-container.aiming,
 #shotgun-container.aiming,
 #inventory.aiming,
-#health-container.aiming {
+#health-container.aiming,
+#dealer-container.aiming {
   opacity: 0;
   pointer-events: none;
+  transform: translateY(0.5rem);
 }
 
-body.aiming,
-body:has(#shotgun-image:hover) {
+body.aiming .base-layer,
+body.aiming .notifications-layer,
+body.aiming .hud-layer,
+body:has(#shotgun-image:hover) .base-layer,
+body:has(#shotgun-image:hover) .notifications-layer,
+body:has(#shotgun-image:hover) .hud-layer {
   animation: shake 0.1s infinite;
 }
 
@@ -458,5 +607,84 @@ body.aiming #aiming-help {
   }
   75% {
     transform: translateX(0.18rem);
+  }
+}
+
+/* Dealer text animations */
+
+@keyframes dealer-shake {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  10% {
+    transform: translateX(calc(-50% - 2px)) translateY(-2px);
+  }
+  20% {
+    transform: translateX(calc(-50% + 2px)) translateY(1.5px);
+  }
+  30% {
+    transform: translateX(calc(-50% - 1.5px)) translateY(2px);
+  }
+  40% {
+    transform: translateX(calc(-50% + 1.5px)) translateY(-1.5px);
+  }
+  50% {
+    transform: translateX(calc(-50% - 2px)) translateY(1.5px);
+  }
+  60% {
+    transform: translateX(calc(-50% + 2px)) translateY(-2px);
+  }
+  70% {
+    transform: translateX(calc(-50% - 1.5px)) translateY(-1.5px);
+  }
+  80% {
+    transform: translateX(calc(-50% + 1.5px)) translateY(2px);
+  }
+  90% {
+    transform: translateX(calc(-50% - 2px)) translateY(-1.5px);
+  }
+}
+
+@keyframes dealer-text-fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes container-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-2px, -2px);
+  }
+  20% {
+    transform: translate(2px, 1.5px);
+  }
+  30% {
+    transform: translate(-1.5px, 2px);
+  }
+  40% {
+    transform: translate(1.5px, -1.5px);
+  }
+  50% {
+    transform: translate(-2px, 1.5px);
+  }
+  60% {
+    transform: translate(2px, -2px);
+  }
+  70% {
+    transform: translate(-1.5px, -1.5px);
+  }
+  80% {
+    transform: translate(1.5px, 2px);
+  }
+  90% {
+    transform: translate(-2px, -1.5px);
   }
 }

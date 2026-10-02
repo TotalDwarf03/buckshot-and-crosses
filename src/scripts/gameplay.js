@@ -205,7 +205,7 @@ function loadShotgun(generateItem = true) {
     addItem(generateItem);
   }
 
-  const shells = createRandomShellSet();
+  shells = createRandomShellSet();
 
   const uniqueShells = new Set(shells);
   if (!uniqueShells.has("x") || !uniqueShells.has("o")) {
