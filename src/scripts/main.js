@@ -80,11 +80,11 @@ function toggleWaiver(visible) {
 
     setTimeout(() => {
       document.body.classList.remove("hud-hidden");
-    }, 3500);
+    }, 3700);
 
     setTimeout(() => {
       loadShotgun();
-    }, 4500);
+    }, 4700);
   });
 
   requestAnimationFrame(() => {
