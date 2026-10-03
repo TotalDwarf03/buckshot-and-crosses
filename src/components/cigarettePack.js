@@ -12,8 +12,7 @@ class CigarettePack extends InventoryItemBase {
     updateHealth(1);
 
     // Remove the cigarette pack from the inventory
-    this.remove();
-    this.clearSlot();
+    this.consume();
   }
 }
 

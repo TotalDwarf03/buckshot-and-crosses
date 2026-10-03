@@ -14,7 +14,7 @@ function updateCell(cell) {
   const index = Array.from(cell.parentNode.children).indexOf(cell);
 
   if (grid[index] != null) {
-    alert("Cell is already occupied!");
+    animateDealerText(chooseRandomDialogue("occupied"), 1000, 800);
     return;
   }
 
@@ -32,7 +32,7 @@ function updateCell(cell) {
       return;
     }
   } else {
-    alert("Blank shell! You missed your shot!");
+    animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
   }
 
   resetShotgun();
@@ -41,6 +41,22 @@ function updateCell(cell) {
     shells = loadShotgun();
   } else {
     shells.shift();
+  }
+
+  switchTurn();
+}
+
+function switchTurn() {
+  if (!skipTurn) {
+    dealerTurn = true;
+
+    // Dealer's turn logic can be implemented here if needed
+    animateDealerText("Dealer's turn!", 1000, 800).finally(() => {
+      dealerTurn = false;
+    });
+  } else {
+    animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
+    skipTurn = false;
   }
 }
 
@@ -69,16 +85,22 @@ function pumpShotgun(viewOnly = false) {
   if (!viewOnly) {
     currentShell = shells.shift();
     resetShotgun();
+
+    if (currentShell !== "blank") {
+      animateDealerText(chooseRandomDialogue("live"), 1000, 800);
+      switchTurn();
+    } else {
+      animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+    }
   } else {
     currentShell = shells[0];
   }
 
-  const shellLoader = elements.shellLoader;
-  shellLoader.innerHTML = "";
+  elements.shellLoader.innerHTML = "";
 
   const motionProfile = createShellMotionProfile();
   const img = createShellElement(currentShell, motionProfile);
-  shellLoader.appendChild(img);
+  elements.shellLoader.appendChild(img);
 
   setTimeout(() => {
     img.classList.add("is-visible");
@@ -90,7 +112,7 @@ function pumpShotgun(viewOnly = false) {
   }, 1000);
 
   setTimeout(() => {
-    shellLoader.innerHTML = "";
+    elements.shellLoader.innerHTML = "";
   }, 1380);
 
   setTimeout(() => {
@@ -102,7 +124,15 @@ function pumpShotgun(viewOnly = false) {
 }
 
 function pickupShotgun() {
-  if (shotgunPickedUp || reloading || pumpAnimating) return;
+  if (
+    shotgunPickedUp ||
+    reloading ||
+    pumpAnimating ||
+    dealerTextAnimating ||
+    dealerTurn
+  ) {
+    return;
+  }
 
   shotgunPickedUp = true;
   setAimingMode(true);

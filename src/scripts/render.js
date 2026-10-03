@@ -115,23 +115,46 @@ function updateHealthDisplay() {
   }
 }
 
-function animateDealerText(
-  message,
-  typingDuration = 2500,
-  postTypingPause = 300,
-  fadeOutDuration = 500,
-) {
+function getDealerTextTotalDuration(typingDuration, postTypingPause) {
+  const firstBuzzDuration = 400;
+  const pauseDuration = 200;
+  const secondBuzzDuration = 400;
+  const fadeOutDuration = 500;
+
+  return (
+    firstBuzzDuration +
+    pauseDuration +
+    secondBuzzDuration +
+    typingDuration +
+    postTypingPause +
+    fadeOutDuration
+  );
+}
+
+function runNextDealerTextAnimation() {
+  if (dealerTextAnimating || dealerTextQueue.length === 0) {
+    return;
+  }
+
+  dealerTextAnimating = true;
+
+  const { message, typingDuration, postTypingPause, resolve } =
+    dealerTextQueue.shift();
   const dealerText = elements.dealerText;
   const dealerContainer = elements.dealerContainer;
+  const firstBuzzDuration = 400;
+  const pauseDuration = 200;
+  const secondBuzzDuration = 400;
+  const charDelay = typingDuration / Math.max(message.length, 1);
+  const totalDuration = getDealerTextTotalDuration(
+    typingDuration,
+    postTypingPause,
+  );
 
-  // Reset animations and classes
   dealerText.classList.remove("animating");
+  dealerText.classList.remove("typing");
   dealerContainer.classList.remove("buzzing");
   dealerText.textContent = "";
-
-  const firstBuzzDuration = 400; // First buzz
-  const pauseDuration = 200; // Pause between buzzes
-  const secondBuzzDuration = 400; // Second buzz
 
   // Start first buzz (0-500ms)
   dealerContainer.classList.add("buzzing");
@@ -152,9 +175,6 @@ function animateDealerText(
       dealerContainer.classList.remove("buzzing");
       dealerText.textContent = "";
       dealerText.classList.add("typing");
-
-      // Calculate character delay for typewriter effect
-      const charDelay = typingDuration / message.length;
 
       // Typewriter effect: reveal one character at a time
       message.split("").forEach((char, index) => {
@@ -179,18 +199,30 @@ function animateDealerText(
   );
 
   // Reset after everything completes
-  setTimeout(
-    () => {
-      dealerText.textContent = "";
-      dealerText.classList.remove("animating");
-      dealerContainer.classList.remove("buzzing");
-      dealerText.classList.remove("typing");
-    },
-    firstBuzzDuration +
-      pauseDuration +
-      secondBuzzDuration +
-      typingDuration +
-      postTypingPause +
-      fadeOutDuration,
-  );
+  setTimeout(() => {
+    dealerText.textContent = "";
+    dealerText.classList.remove("animating");
+    dealerContainer.classList.remove("buzzing");
+    dealerText.classList.remove("typing");
+    dealerTextAnimating = false;
+    resolve(totalDuration);
+    runNextDealerTextAnimation();
+  }, totalDuration);
+}
+
+function animateDealerText(
+  message,
+  typingDuration = 2500,
+  postTypingPause = 300,
+) {
+  return new Promise((resolve) => {
+    dealerTextQueue.push({
+      message,
+      typingDuration,
+      postTypingPause,
+      resolve,
+    });
+
+    runNextDealerTextAnimation();
+  });
 }

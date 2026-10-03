@@ -8,9 +8,11 @@ class Handcuffs extends InventoryItemBase {
   }
 
   useItem() {
+    // Skip the next turn
+    skipTurn = true;
+
     // Remove the handcuffs from the inventory
-    this.remove();
-    this.clearSlot();
+    this.consume();
   }
 }
 

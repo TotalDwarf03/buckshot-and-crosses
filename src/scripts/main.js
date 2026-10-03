@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setupInteractionHandlers();
   updateHealthDisplay();
 
-  animateDealerText("Sign the waiver.", 1500, 1200);
+  animateDealerText(chooseRandomDialogue("sign"), 1500, 1200);
 
   // Show the waiver after the dealer text animation is complete.
   setTimeout(() => {
@@ -25,7 +25,6 @@ function setupGlobalEventHandlers() {
 }
 
 function setupInteractionHandlers() {
-  elements.grid.addEventListener("click", handleGridClick);
   elements.shotgunImage.addEventListener("click", pickupShotgun);
 }
 
@@ -38,14 +37,6 @@ function handlePointerLockChange() {
 function handleDocumentKeydown(event) {
   if (shotgunPickedUp && event.key === "Escape") {
     resetShotgun();
-  }
-}
-
-function handleGridClick(event) {
-  const targetCell = event.target.closest(".grid-item");
-
-  if (targetCell) {
-    updateCell(targetCell);
   }
 }
 
@@ -75,7 +66,7 @@ function toggleWaiver(visible) {
     toggleWaiver(false);
 
     setTimeout(() => {
-      animateDealerText("Good Luck.", 1500, 1200);
+      animateDealerText(chooseRandomDialogue("start"), 1500, 1200);
     }, 500);
 
     setTimeout(() => {

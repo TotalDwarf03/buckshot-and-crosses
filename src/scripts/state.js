@@ -4,6 +4,10 @@
 
 let grid = Array(9).fill(null);
 let win = null;
+
+let skipTurn = false;
+let dealerTurn = false;
+
 let crosshairListener = null;
 let shotgunClickListener = null;
 let pumpListener = null;
@@ -12,6 +16,9 @@ let shells;
 let reloading = false;
 let pumpAnimating = false;
 let currentAimPoint = null;
+
+let dealerTextQueue = [];
+let dealerTextAnimating = false;
 
 const CROSSHAIR_OFFSET_X = 817.5;
 const CROSSHAIR_OFFSET_Y = 210;
@@ -37,7 +44,6 @@ const elements = {
   shotgunContainer: document.getElementById("shotgun-container"),
   shotgunImage: document.getElementById("shotgun-image"),
   healthContainer: document.getElementById("health-container"),
-  healthBar: document.getElementById("health-bar"),
   crosshair: document.getElementById("crosshair"),
   vignette: document.getElementById("vignette"),
   inventory: document.getElementById("inventory"),

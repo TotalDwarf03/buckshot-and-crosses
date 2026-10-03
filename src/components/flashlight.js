@@ -12,8 +12,7 @@ class Flashlight extends InventoryItemBase {
     pumpShotgun(true);
 
     // Remove the flashlight from the inventory
-    this.remove();
-    this.clearSlot();
+    this.consume();
   }
 }
 

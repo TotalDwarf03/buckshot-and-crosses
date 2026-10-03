@@ -415,11 +415,6 @@ body.hud-hidden #health-container {
 
 /* State Styling */
 
-.viewport-layer.aiming {
-  opacity: 0;
-  pointer-events: none;
-}
-
 #shell-container.aiming,
 #shotgun-container.aiming,
 #inventory.aiming,
@@ -433,9 +428,11 @@ body.hud-hidden #health-container {
 body.aiming .base-layer,
 body.aiming .notifications-layer,
 body.aiming .hud-layer,
+body.aiming #dealer-container,
 body:has(#shotgun-image:hover) .base-layer,
 body:has(#shotgun-image:hover) .notifications-layer,
-body:has(#shotgun-image:hover) .hud-layer {
+body:has(#shotgun-image:hover) .hud-layer,
+body:has(#shotgun-image:hover) #dealer-container {
   animation: shake 0.1s infinite;
 }
 
@@ -613,34 +610,34 @@ body.aiming #aiming-help {
 @keyframes dealer-shake {
   0%,
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) rotate(0deg);
   }
   10% {
-    transform: translateX(calc(-50% - 2px)) translateY(-2px);
+    transform: translateX(calc(-50% - 2px)) translateY(-2px) rotate(-1.2deg);
   }
   20% {
-    transform: translateX(calc(-50% + 2px)) translateY(1.5px);
+    transform: translateX(calc(-50% + 2px)) translateY(1.5px) rotate(1.1deg);
   }
   30% {
-    transform: translateX(calc(-50% - 1.5px)) translateY(2px);
+    transform: translateX(calc(-50% - 1.5px)) translateY(2px) rotate(-0.9deg);
   }
   40% {
-    transform: translateX(calc(-50% + 1.5px)) translateY(-1.5px);
+    transform: translateX(calc(-50% + 1.5px)) translateY(-1.5px) rotate(0.8deg);
   }
   50% {
-    transform: translateX(calc(-50% - 2px)) translateY(1.5px);
+    transform: translateX(calc(-50% - 2px)) translateY(1.5px) rotate(-1deg);
   }
   60% {
-    transform: translateX(calc(-50% + 2px)) translateY(-2px);
+    transform: translateX(calc(-50% + 2px)) translateY(-2px) rotate(1.2deg);
   }
   70% {
-    transform: translateX(calc(-50% - 1.5px)) translateY(-1.5px);
+    transform: translateX(calc(-50% - 1.5px)) translateY(-1.5px) rotate(-0.8deg);
   }
   80% {
-    transform: translateX(calc(-50% + 1.5px)) translateY(2px);
+    transform: translateX(calc(-50% + 1.5px)) translateY(2px) rotate(0.9deg);
   }
   90% {
-    transform: translateX(calc(-50% - 2px)) translateY(-1.5px);
+    transform: translateX(calc(-50% - 2px)) translateY(-1.5px) rotate(-1.1deg);
   }
 }
 
@@ -656,33 +653,33 @@ body.aiming #aiming-help {
 @keyframes container-shake {
   0%,
   100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) rotate(0deg);
   }
   10% {
-    transform: translate(-2px, -2px);
+    transform: translate(-2px, -2px) rotate(-0.9deg);
   }
   20% {
-    transform: translate(2px, 1.5px);
+    transform: translate(2px, 1.5px) rotate(0.8deg);
   }
   30% {
-    transform: translate(-1.5px, 2px);
+    transform: translate(-1.5px, 2px) rotate(-0.7deg);
   }
   40% {
-    transform: translate(1.5px, -1.5px);
+    transform: translate(1.5px, -1.5px) rotate(0.6deg);
   }
   50% {
-    transform: translate(-2px, 1.5px);
+    transform: translate(-2px, 1.5px) rotate(-0.8deg);
   }
   60% {
-    transform: translate(2px, -2px);
+    transform: translate(2px, -2px) rotate(0.9deg);
   }
   70% {
-    transform: translate(-1.5px, -1.5px);
+    transform: translate(-1.5px, -1.5px) rotate(-0.6deg);
   }
   80% {
-    transform: translate(1.5px, 2px);
+    transform: translate(1.5px, 2px) rotate(0.7deg);
   }
   90% {
-    transform: translate(-2px, -1.5px);
+    transform: translate(-2px, -1.5px) rotate(-0.8deg);
   }
 }

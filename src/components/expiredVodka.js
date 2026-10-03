@@ -16,8 +16,7 @@ class ExpiredVodka extends InventoryItemBase {
     }
 
     // Remove the expired vodka from the inventory
-    this.remove();
-    this.clearSlot();
+    this.consume();
   }
 }
 

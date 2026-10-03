@@ -24,6 +24,14 @@ Items that the player can use will be displayed in the player's HUD. The dealer 
 
 _it also makes the UI cleaner and is less work for me to implement..._
 
+## Dialogue
+
+To ensure that the dealer's dialogue is varied and interesting, a dialogue system has been implemented. The dealer will have a set of pre-defined messages that he can display to the player, which will be randomly selected from a pool of messages.
+
+For example, if the player tries to shoot at a cell that is already occupied, the dealer will display a message from the "occupied" pool of messages. If the player shoots at a blank cell, the dealer will display a message from the "blank" pool of messages.
+
+This system is controlled by the `dialogue.js` script, which contains the logic for selecting the dealer's messages.
+
 ## Dealer turn logic
 
 TODO: define algorithm for dealer turn logic.

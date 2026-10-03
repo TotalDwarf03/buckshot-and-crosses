@@ -31,8 +31,7 @@ class StrangeContraption extends InventoryItemBase {
     }
 
     // Remove the strange contraption from the inventory
-    this.remove();
-    this.clearSlot();
+    this.consume();
   }
 }
 

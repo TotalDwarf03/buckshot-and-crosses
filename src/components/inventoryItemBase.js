@@ -17,4 +17,9 @@ class InventoryItemBase extends HTMLElement {
   clearSlot() {
     items[this.slot] = null;
   }
+
+  consume() {
+    this.remove();
+    this.clearSlot();
+  }
 }
