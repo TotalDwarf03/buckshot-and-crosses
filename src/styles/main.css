@@ -123,7 +123,6 @@ body {
       (0.5rem * (var(--max-health) - 1))
   );
   border: 2px solid var(--color-ui);
-  padding: 0.2rem;
   transition:
     opacity 0.28s ease,
     transform 0.28s ease;
@@ -190,7 +189,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   width: min(20rem, 24%);
   height: 100%;
   padding: 1rem 1.5rem 1.5rem 0;
@@ -204,8 +203,8 @@ body {
   display: block;
   width: auto;
   height: auto;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 70%;
+  max-height: 70%;
   cursor: pointer;
   transform-origin: bottom center;
   transition: transform 0.2s ease;
@@ -257,11 +256,10 @@ body {
 /* Inventory Styling */
 #inventory {
   position: fixed;
-  left: 50%;
-  bottom: 1.5rem;
+  right: 1rem;
+  bottom: 1rem;
   display: flex;
   gap: 0.5rem;
-  transform: translateX(-50%);
   z-index: 31;
   pointer-events: auto;
   transition:

@@ -104,15 +104,14 @@ function updateInventoryDisplay(newItem, emptySlot) {
 }
 
 function updateHealthDisplay() {
-  const healthBar = elements.healthBar;
-  healthBar.innerHTML = "";
+  elements.healthContainer.innerHTML = "";
 
   for (let i = 0; i < health; i++) {
     const heartImage = document.createElement("img");
     heartImage.src = "assets/health-point.png";
     heartImage.alt = "health point";
     heartImage.className = "health-point";
-    healthBar.appendChild(heartImage);
+    elements.healthContainer.appendChild(heartImage);
   }
 }
 
