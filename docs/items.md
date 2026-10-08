@@ -28,4 +28,4 @@ Has a 60% chance to revert the previous board action, a 30% chance to do nothing
 
 ### Expired Vodka
 
-Has a 50% chance to restore a life to the user, and a 50% chance to make the user lose a life.
+Pumps the shotgun, giving the user a second turn, regardless of the current shell.

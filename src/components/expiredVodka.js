@@ -8,12 +8,8 @@ class ExpiredVodka extends InventoryItemBase {
   }
 
   useItem() {
-    // Add or remove 1 to the player's health when the expired vodka is used
-    if (randint(0, 1) === 0) {
-      updateHealth(1);
-    } else {
-      updateHealth(-1);
-    }
+    // Pumps the shotgun, giving the user a second turn, regardless of the current shell.
+    pumpShotgun("expired-vodka");
 
     // Remove the expired vodka from the inventory
     this.consume();

@@ -9,7 +9,7 @@ class Flashlight extends InventoryItemBase {
 
   useItem() {
     // Reveal current shell to player
-    pumpShotgun(true);
+    pumpShotgun("custom-flashlight");
 
     // Remove the flashlight from the inventory
     this.consume();

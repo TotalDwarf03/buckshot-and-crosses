@@ -87,29 +87,42 @@ function checkWin() {
   return null;
 }
 
-function pumpShotgun(viewOnly = false) {
+function pumpShotgun(itemUsed = null) {
   pumpAnimating = true;
   let currentShell;
 
-  if (!viewOnly) {
-    currentShell = shells.shift();
-    resetShotgun();
+  switch (itemUsed) {
+    case "expired-vodka":
+      // pump the shotgun without switching turn
+      currentShell = shells.shift();
+      break;
 
-    if (currentShell !== "blank") {
-      animateDealerText(chooseRandomDialogue("live"), 1000, 800);
-      switchTurn();
-    } else {
-      if (dealerTurn) {
-        // If blank pump on dealer turn, dealer takes another
-        actionDealerTurn();
+    case "custom-flashlight":
+      // pump the shotgun without spending the shell
+      // we only want to show the current shell without removing it
+      currentShell = shells[0];
+      break;
+
+    default:
+      // If pumped by player or dealer, remove the shell and switch turn if not blank
+      currentShell = shells.shift();
+      resetShotgun();
+
+      if (currentShell !== "blank") {
+        animateDealerText(chooseRandomDialogue("live"), 1000, 800);
+        switchTurn();
       } else {
-        // If blank pump on player turn, just show dialogue
-        // Player can then take another turn
-        animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+        if (dealerTurn) {
+          // If blank pump on dealer turn, dealer takes another
+          actionDealerTurn();
+        } else {
+          // If blank pump on player turn, just show dialogue
+          // Player can then take another turn
+          animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+        }
       }
-    }
-  } else {
-    currentShell = shells[0];
+
+      break;
   }
 
   elements.shellLoader.innerHTML = "";
