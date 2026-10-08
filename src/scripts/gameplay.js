@@ -7,7 +7,7 @@
  */
 
 function updateCell(cell) {
-  if (win || !shotgunPickedUp) {
+  if ((win || !shotgunPickedUp) && !dealerTurn) {
     return;
   }
 
@@ -47,16 +47,24 @@ function updateCell(cell) {
 }
 
 function switchTurn() {
-  if (!skipTurn) {
-    dealerTurn = true;
-
-    // Dealer's turn logic can be implemented here if needed
-    animateDealerText("Dealer's turn!", 1000, 800).finally(() => {
-      dealerTurn = false;
-    });
+  console.log(
+    "Switching turn. Dealer turn:",
+    dealerTurn,
+    "Skip turn:",
+    skipTurn,
+  );
+  if (dealerTurn) {
+    dealerTurn = false;
+    animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
   } else {
-    animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
-    skipTurn = false;
+    if (!skipTurn) {
+      dealerTurn = true;
+
+      actionDealerTurn();
+    } else {
+      animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
+      skipTurn = false;
+    }
   }
 }
 
@@ -90,7 +98,14 @@ function pumpShotgun(viewOnly = false) {
       animateDealerText(chooseRandomDialogue("live"), 1000, 800);
       switchTurn();
     } else {
-      animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+      if (dealerTurn) {
+        // If blank pump on dealer turn, dealer takes another
+        actionDealerTurn();
+      } else {
+        // If blank pump on player turn, just show dialogue
+        // Player can then take another turn
+        animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+      }
     }
   } else {
     currentShell = shells[0];
@@ -321,4 +336,94 @@ function chamberShellsIntoShotgun(sortedShells, loadStartDelay, loadEndDelay) {
 function updateHealth(increment) {
   health = Math.max(0, Math.min(health + increment, MAX_HEALTH));
   updateHealthDisplay();
+}
+
+function calculateShellProbabilities(shellType) {
+  const totalShells = shells.length;
+  return shells.filter((shell) => shell === shellType).length / totalShells;
+}
+
+function findWinningCells(shellType) {
+  // Get all of the winning combinations which contain the free cells
+  const winningCombinations = WINNING_COMBINATIONS.filter((combination) =>
+    combination.some((index) => grid[index] === null),
+  );
+
+  let validWinningCombinations = [];
+
+  // Translate combination indexes to actual cell elements
+  winningCombinations.forEach((combination) => {
+    const currentCombinationValues = combination.map((index) => grid[index]);
+    const hasTwoOfSameType =
+      currentCombinationValues.filter((value) => value === shellType).length ===
+      2;
+
+    if (hasTwoOfSameType) {
+      validWinningCombinations.push(combination);
+    }
+  });
+
+  let winningCells = [];
+
+  if (validWinningCombinations.length > 0) {
+    // If there's a winning combination, find the empty cell in that combination and add it to the winningCells array
+    validWinningCombinations.forEach((combination) => {
+      const emptyCellIndex = combination.find((index) => grid[index] === null);
+      const emptyCell = elements.grid.children[emptyCellIndex];
+      winningCells.push(emptyCell);
+    });
+  }
+
+  return winningCells;
+}
+
+function shootRandomCell(cellOptions) {
+  const randomCell = cellOptions[randint(0, cellOptions.length - 1)];
+  updateCell(randomCell);
+}
+
+function actionDealerTurn() {
+  const chances = {
+    x: calculateShellProbabilities("x"),
+    o: calculateShellProbabilities("o"),
+    blank: calculateShellProbabilities("blank"),
+  };
+
+  const highestChanceType = Object.keys(chances).reduce((a, b) =>
+    chances[a] > chances[b] ? a : b,
+  );
+
+  console.log("Dealer's shell probabilities:", chances);
+  console.log("Dealer's highest chance shell type:", highestChanceType);
+
+  // If x or o, need to shoot a cell
+  if (["x", "o"].includes(highestChanceType)) {
+    const unoccupiedCells = Array.from(elements.grid.children).filter(
+      (cell, index) => grid[index] === null,
+    );
+    const winningCells = findWinningCells(highestChanceType);
+    const defensiveCells = findWinningCells(
+      highestChanceType === "x" ? "o" : "x",
+    );
+
+    if (winningCells.length > 0) {
+      // If there's a winning combination, pick a random cell from the winningCells array
+      console.log("Dealer has a winning move!");
+      shootRandomCell(winningCells);
+      return;
+    } else if (defensiveCells.length > 0) {
+      // If there's a defensive combination, pick a random cell from the defensiveCells array
+      console.log("Dealer has a defensive move!");
+      shootRandomCell(defensiveCells);
+      return;
+    }
+
+    // If no winning combinations, just pick a random unoccupied cell
+    console.log("Dealer has no winning or defensive moves.");
+    shootRandomCell(unoccupiedCells);
+  } else {
+    // If blank, just pump the shotgun
+    console.log("Dealer has a blank shell. Pumping shotgun.");
+    pumpShotgun();
+  }
 }

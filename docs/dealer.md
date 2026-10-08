@@ -34,4 +34,19 @@ This system is controlled by the `dialogue.js` script, which contains the logic 
 
 ## Dealer turn logic
 
-TODO: define algorithm for dealer turn logic.
+The dealer's turn logic is implemented as part of `switchTurn()` in `gameplay.js`.
+
+The dealer uses the following logic to determine his next move:
+
+- **What shell is most likely to be in the shotgun?**
+  - This uses the `shells` variable in `state.js`.
+  - The dealer will grab the percentage of each shell type being left in the shotgun (i.e. 60% x, 30% o and 10% blank)
+  - The dealer will then assume that the biggest percentage is the shell that is most likely to be in the shotgun, and make its move based on that assumption.
+- **Are there any cells which can cause a win?**
+  - With the assumption of what shell is most likely to be in the shotgun, the dealer will check if there are any cells that can cause a win with that shell type. If there are, the dealer will shoot at that cell.
+- **Are there any cells which can cause a loss?**
+  - If there are no cells that can cause a win, the dealer will check if there are any cells that can cause a loss that he can block. If there are, the dealer will shoot at that cell.
+- **Is there a blank loaded?**
+  - If the current shell type is blank, the dealer will pump the shotgun to try and get a 2nd turn.
+- **Otherwise, shoot at a random cell**
+  - If none of the above conditions are met, the dealer will shoot at a random cell.

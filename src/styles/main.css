@@ -340,8 +340,8 @@ body.hud-hidden #health-container {
 #dealer-image {
   position: absolute;
   top: 18%;
-  left: 15%;
-  width: min(8rem, 22%);
+  left: 18%;
+  width: min(6rem, 10%);
   height: auto;
   object-fit: contain;
   pointer-events: none;
@@ -372,7 +372,7 @@ body.hud-hidden #health-container {
 }
 
 #waiver-image {
-  width: min(20rem, 80%);
+  width: min(75%, 20rem);
   height: auto;
   object-fit: contain;
 }

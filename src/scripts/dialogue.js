@@ -26,4 +26,5 @@ const dealerDialogue = {
     "...",
     "...— — —...",
   ],
+  playerTurn: ["Your move.", "Make your choice.", "Your turn.", "Time to act."],
 };
