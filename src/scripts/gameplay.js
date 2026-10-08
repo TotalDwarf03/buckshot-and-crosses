@@ -26,10 +26,38 @@ function updateCell(cell) {
 
     win = checkWin();
 
-    if (win) {
-      alert(win);
-      resetShotgun();
-      return;
+    if (win === "win") {
+      if (dealerTurn) {
+        if (health !== 1) {
+          animateDealerText(chooseRandomDialogue("dealerWin"), 1000, 800);
+          updateHealth(-1);
+
+          // Empty the grid and update the UI
+          resetGrid();
+        } else {
+          animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
+          updateHealth(-1);
+
+          // TODO: Decide what happens here when the player loses.
+        }
+      } else {
+        winCounter++;
+
+        if (winCounter !== 2) {
+          animateDealerText(chooseRandomDialogue("playerWin"), 1000, 800);
+          resetGrid();
+        } else {
+          // Player has won 2 rounds, they win the game
+          animateDealerText(chooseRandomDialogue("gameWin"), 1000, 800);
+
+          // TODO: Decide what happens here when the player wins.
+        }
+      }
+    } else if (win === "draw") {
+      animateDealerText(chooseRandomDialogue("reset"), 1000, 800);
+
+      // Empty the grid and update the UI
+      resetGrid();
     }
   } else {
     animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
@@ -45,6 +73,14 @@ function updateCell(cell) {
 
   shells.shift();
   switchTurn();
+}
+
+function resetGrid() {
+  grid = Array(9).fill(null);
+  elements.grid.querySelectorAll(".cell-mark").forEach((mark) => {
+    mark.remove();
+  });
+  win = null;
 }
 
 function switchTurn() {
@@ -76,12 +112,12 @@ function checkWin() {
     const uniqueValues = new Set(gridStatus);
 
     if (uniqueValues.size === 1 && !uniqueValues.has(null)) {
-      return `${grid[a]} wins!`;
+      return "win";
     }
   }
 
   if (!grid.includes(null)) {
-    return "Draw";
+    return "draw";
   }
 
   return null;

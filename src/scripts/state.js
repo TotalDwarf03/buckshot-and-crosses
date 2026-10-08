@@ -62,6 +62,8 @@ let items = Array(3).fill(null);
 let health = 2;
 let previousShot;
 
+let winCounter = 0;
+
 const availableItems = [
   "custom-handcuffs",
   "custom-flashlight",
