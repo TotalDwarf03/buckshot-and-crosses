@@ -38,11 +38,12 @@ function updateCell(cell) {
   resetShotgun();
 
   if (shells.length === 1) {
+    // If shotgun empty, new round starts and player goes first
     shells = loadShotgun();
-  } else {
-    shells.shift();
+    return;
   }
 
+  shells.shift();
   switchTurn();
 }
 
@@ -246,6 +247,10 @@ function resetShotgun() {
 function loadShotgun(generateItem = true) {
   reloading = true;
 
+  // When loading the shotgun, this indicates a new round.
+  // The player should always go first here.
+  dealerTurn = false;
+
   for (let i = 0; i < itemsPerRound; i++) {
     addItem(generateItem);
   }
@@ -424,6 +429,7 @@ function actionDealerTurn() {
   } else {
     // If blank, just pump the shotgun
     console.log("Dealer has a blank shell. Pumping shotgun.");
+    console.log("Real Shell: ", shells[0]);
     pumpShotgun();
   }
 }
