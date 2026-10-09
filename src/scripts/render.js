@@ -115,114 +115,73 @@ function updateHealthDisplay() {
   }
 }
 
-function getDealerTextTotalDuration(typingDuration, postTypingPause) {
-  const firstBuzzDuration = 400;
-  const pauseDuration = 200;
-  const secondBuzzDuration = 400;
-  const fadeOutDuration = 500;
-
-  return (
-    firstBuzzDuration +
-    pauseDuration +
-    secondBuzzDuration +
-    typingDuration +
-    postTypingPause +
-    fadeOutDuration
-  );
-}
-
-function runNextDealerTextAnimation() {
-  if (dealerTextAnimating || dealerTextQueue.length === 0) {
-    return;
-  }
-
-  dealerTextAnimating = true;
-
-  const { message, typingDuration, postTypingPause, resolve } =
-    dealerTextQueue.shift();
-  const dealerText = elements.dealerText;
-  const dealerContainer = elements.dealerContainer;
-  const firstBuzzDuration = 400;
-  const pauseDuration = 200;
-  const secondBuzzDuration = 400;
-  const charDelay = typingDuration / Math.max(message.length, 1);
-  const totalDuration = getDealerTextTotalDuration(
-    typingDuration,
-    postTypingPause,
-  );
-
-  dealerText.classList.remove("animating");
-  dealerText.classList.remove("typing");
-  dealerContainer.classList.remove("buzzing");
-  dealerText.textContent = "";
-
-  // Start first buzz (0-500ms)
-  dealerContainer.classList.add("buzzing");
-
-  // Stop first buzz and start pause
-  setTimeout(() => {
-    dealerContainer.classList.remove("buzzing");
-  }, firstBuzzDuration);
-
-  // Start second buzz after pause (800-1300ms)
-  setTimeout(() => {
-    dealerContainer.classList.add("buzzing");
-  }, firstBuzzDuration + pauseDuration);
-
-  // Stop second buzz and start typing
-  setTimeout(
-    () => {
-      dealerContainer.classList.remove("buzzing");
-      dealerText.textContent = "";
-      dealerText.classList.add("typing");
-
-      // Typewriter effect: reveal one character at a time
-      message.split("").forEach((char, index) => {
-        setTimeout(() => {
-          dealerText.textContent += char;
-        }, index * charDelay);
-      });
-    },
-    firstBuzzDuration + pauseDuration + secondBuzzDuration,
-  );
-
-  // Start fade out after typing completes with a short pause
-  setTimeout(
-    () => {
-      dealerText.classList.add("animating");
-    },
-    firstBuzzDuration +
-      pauseDuration +
-      secondBuzzDuration +
-      typingDuration +
-      postTypingPause,
-  );
-
-  // Reset after everything completes
-  setTimeout(() => {
-    dealerText.textContent = "";
-    dealerText.classList.remove("animating");
-    dealerContainer.classList.remove("buzzing");
-    dealerText.classList.remove("typing");
-    dealerTextAnimating = false;
-    resolve(totalDuration);
-    runNextDealerTextAnimation();
-  }, totalDuration);
-}
-
 function animateDealerText(
   message,
   typingDuration = 2500,
   postTypingPause = 300,
 ) {
   return new Promise((resolve) => {
-    dealerTextQueue.push({
-      message,
-      typingDuration,
-      postTypingPause,
-      resolve,
-    });
+    const dealerText = elements.dealerText;
+    const dealerContainer = elements.dealerContainer;
+    const firstBuzzDuration = 400;
+    const pauseDuration = 200;
+    const secondBuzzDuration = 400;
+    const charDelay = typingDuration / Math.max(message.length, 1);
+    const totalDuration =
+      firstBuzzDuration +
+      pauseDuration +
+      secondBuzzDuration +
+      typingDuration +
+      postTypingPause +
+      500;
 
-    runNextDealerTextAnimation();
+    dealerText.classList.remove("animating");
+    dealerText.classList.remove("typing");
+    dealerContainer.classList.remove("buzzing");
+    dealerText.textContent = "";
+
+    dealerContainer.classList.add("buzzing");
+
+    setTimeout(() => {
+      dealerContainer.classList.remove("buzzing");
+    }, firstBuzzDuration);
+
+    setTimeout(() => {
+      dealerContainer.classList.add("buzzing");
+    }, firstBuzzDuration + pauseDuration);
+
+    setTimeout(
+      () => {
+        dealerContainer.classList.remove("buzzing");
+        dealerText.textContent = "";
+        dealerText.classList.add("typing");
+
+        message.split("").forEach((char, index) => {
+          setTimeout(() => {
+            dealerText.textContent += char;
+          }, index * charDelay);
+        });
+      },
+      firstBuzzDuration + pauseDuration + secondBuzzDuration,
+    );
+
+    setTimeout(
+      () => {
+        dealerText.classList.add("animating");
+      },
+      firstBuzzDuration +
+        pauseDuration +
+        secondBuzzDuration +
+        typingDuration +
+        postTypingPause,
+    );
+
+    setTimeout(() => {
+      dealerText.textContent = "";
+      dealerText.classList.remove("animating");
+      dealerContainer.classList.remove("buzzing");
+      dealerText.classList.remove("typing");
+      resolve(totalDuration);
+    }, totalDuration);
   });
 }

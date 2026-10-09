@@ -8,7 +8,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setupInteractionHandlers();
   updateHealthDisplay();
 
-  animateDealerText(chooseRandomDialogue("sign"), 1500, 1200);
+  queueAction(() =>
+    animateDealerText(chooseRandomDialogue("sign"), 1500, 1200),
+  );
 
   // Show the waiver after the dealer text animation is complete.
   setTimeout(() => {
@@ -66,7 +68,9 @@ function toggleWaiver(visible) {
     toggleWaiver(false);
 
     setTimeout(() => {
-      animateDealerText(chooseRandomDialogue("start"), 1500, 1200);
+      queueAction(() =>
+        animateDealerText(chooseRandomDialogue("start"), 1500, 1200),
+      );
     }, 500);
 
     setTimeout(() => {

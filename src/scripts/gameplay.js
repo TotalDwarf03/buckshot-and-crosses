@@ -6,7 +6,17 @@
  * However, for the current scope of the project, this file serves as the main hub for gameplay-related functionality.
  */
 
+function delay(duration) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, duration);
+  });
+}
+
 function updateCell(cell) {
+  return queueAction(() => performUpdateCell(cell));
+}
+
+async function performUpdateCell(cell) {
   if ((win || !shotgunPickedUp) && !dealerTurn) {
     return;
   }
@@ -14,7 +24,7 @@ function updateCell(cell) {
   const index = Array.from(cell.parentNode.children).indexOf(cell);
 
   if (grid[index] != null) {
-    animateDealerText(chooseRandomDialogue("occupied"), 1000, 800);
+    await animateDealerText(chooseRandomDialogue("occupied"), 1000, 800);
     return;
   }
 
@@ -24,18 +34,22 @@ function updateCell(cell) {
     grid[index] = shells[0];
     renderCellMark(cell, shells[0]);
 
+    resetShotgun();
+
     win = checkWin();
 
     if (win === "win") {
       if (dealerTurn) {
         if (health !== 1) {
-          animateDealerText(chooseRandomDialogue("dealerWin"), 1000, 800);
+          await animateDealerText(chooseRandomDialogue("dealerWin"), 1000, 800);
           updateHealth(-1);
 
           // Empty the grid and update the UI
           resetGrid();
+          await performLoadShotgun();
+          return;
         } else {
-          animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
+          await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
           updateHealth(-1);
 
           // TODO: Decide what happens here when the player loses.
@@ -44,35 +58,38 @@ function updateCell(cell) {
         winCounter++;
 
         if (winCounter !== 2) {
-          animateDealerText(chooseRandomDialogue("playerWin"), 1000, 800);
+          await animateDealerText(chooseRandomDialogue("playerWin"), 1000, 800);
           resetGrid();
+          await performLoadShotgun();
+          return;
         } else {
           // Player has won 2 rounds, they win the game
-          animateDealerText(chooseRandomDialogue("gameWin"), 1000, 800);
+          await animateDealerText(chooseRandomDialogue("gameWin"), 1000, 800);
 
           // TODO: Decide what happens here when the player wins.
         }
       }
     } else if (win === "draw") {
-      animateDealerText(chooseRandomDialogue("reset"), 1000, 800);
+      await animateDealerText(chooseRandomDialogue("reset"), 1000, 800);
 
       // Empty the grid and update the UI
       resetGrid();
+      await performLoadShotgun();
+      return;
     }
   } else {
-    animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
+    resetShotgun();
+    await animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
   }
-
-  resetShotgun();
 
   if (shells.length === 1) {
     // If shotgun empty, new round starts and player goes first
-    shells = loadShotgun();
+    await performLoadShotgun();
     return;
   }
 
   shells.shift();
-  switchTurn();
+  await performSwitchTurn();
 }
 
 function resetGrid() {
@@ -84,6 +101,10 @@ function resetGrid() {
 }
 
 function switchTurn() {
+  return queueAction(() => performSwitchTurn());
+}
+
+async function performSwitchTurn() {
   console.log(
     "Switching turn. Dealer turn:",
     dealerTurn,
@@ -92,14 +113,14 @@ function switchTurn() {
   );
   if (dealerTurn) {
     dealerTurn = false;
-    animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
+    await animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
   } else {
     if (!skipTurn) {
       dealerTurn = true;
 
-      actionDealerTurn();
+      await performActionDealerTurn();
     } else {
-      animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
+      await animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
       skipTurn = false;
     }
   }
@@ -124,6 +145,10 @@ function checkWin() {
 }
 
 function pumpShotgun(itemUsed = null) {
+  return queueAction(() => performPumpShotgun(itemUsed));
+}
+
+async function performPumpShotgun(itemUsed = null) {
   pumpAnimating = true;
   let currentShell;
 
@@ -140,23 +165,9 @@ function pumpShotgun(itemUsed = null) {
       break;
 
     default:
-      // If pumped by player or dealer, remove the shell and switch turn if not blank
+      // If pumped by player or dealer, remove the shell and clear the shotgun UI.
       currentShell = shells.shift();
       resetShotgun();
-
-      if (currentShell !== "blank") {
-        animateDealerText(chooseRandomDialogue("live"), 1000, 800);
-        switchTurn();
-      } else {
-        if (dealerTurn) {
-          // If blank pump on dealer turn, dealer takes another
-          actionDealerTurn();
-        } else {
-          // If blank pump on player turn, just show dialogue
-          // Player can then take another turn
-          animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
-        }
-      }
 
       break;
   }
@@ -180,12 +191,32 @@ function pumpShotgun(itemUsed = null) {
     elements.shellLoader.innerHTML = "";
   }, 1380);
 
-  setTimeout(() => {
-    if (shells.length === 0) {
-      shells = loadShotgun();
-    }
+  await delay(1500);
+
+  if (shells.length === 0) {
+    await performLoadShotgun();
     pumpAnimating = false;
-  }, 1500);
+    return;
+  }
+
+  if (itemUsed === "expired-vodka" || itemUsed === "custom-flashlight") {
+    pumpAnimating = false;
+    return;
+  }
+
+  if (currentShell !== "blank") {
+    await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
+    await performSwitchTurn();
+  } else if (dealerTurn) {
+    // If blank pump on dealer turn, dealer takes another
+    await performActionDealerTurn();
+  } else {
+    // If blank pump on player turn, just show dialogue
+    // Player can then take another turn
+    await animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+  }
+
+  pumpAnimating = false;
 }
 
 function pickupShotgun() {
@@ -193,7 +224,7 @@ function pickupShotgun() {
     shotgunPickedUp ||
     reloading ||
     pumpAnimating ||
-    dealerTextAnimating ||
+    actionQueueRunning ||
     dealerTurn
   ) {
     return;
@@ -294,6 +325,10 @@ function resetShotgun() {
 }
 
 function loadShotgun(generateItem = true) {
+  return queueAction(() => performLoadShotgun(generateItem));
+}
+
+async function performLoadShotgun(generateItem = true) {
   reloading = true;
 
   // When loading the shotgun, this indicates a new round.
@@ -308,7 +343,7 @@ function loadShotgun(generateItem = true) {
 
   const uniqueShells = new Set(shells);
   if (!uniqueShells.has("x") || !uniqueShells.has("o")) {
-    return loadShotgun(false);
+    return performLoadShotgun(false);
   }
 
   const sortedShells = sortShellsForDisplay(shells);
@@ -329,9 +364,9 @@ function loadShotgun(generateItem = true) {
 
   chamberShellsIntoShotgun(sortedShells, loadStartDelay, loadEndDelay);
 
-  setTimeout(() => {
-    reloading = false;
-  }, loadEndDelay);
+  await delay(loadEndDelay);
+
+  reloading = false;
 
   return shells;
 }
@@ -431,12 +466,15 @@ function findWinningCells(shellType) {
   return winningCells;
 }
 
-function shootRandomCell(cellOptions) {
-  const randomCell = cellOptions[randint(0, cellOptions.length - 1)];
-  updateCell(randomCell);
+function selectRandomCell(cellOptions) {
+  return cellOptions[randint(0, cellOptions.length - 1)];
 }
 
 function actionDealerTurn() {
+  return queueAction(() => performActionDealerTurn());
+}
+
+async function performActionDealerTurn() {
   const chances = {
     x: calculateShellProbabilities("x"),
     o: calculateShellProbabilities("o"),
@@ -463,22 +501,22 @@ function actionDealerTurn() {
     if (winningCells.length > 0) {
       // If there's a winning combination, pick a random cell from the winningCells array
       console.log("Dealer has a winning move!");
-      shootRandomCell(winningCells);
+      await performUpdateCell(selectRandomCell(winningCells));
       return;
     } else if (defensiveCells.length > 0) {
       // If there's a defensive combination, pick a random cell from the defensiveCells array
       console.log("Dealer has a defensive move!");
-      shootRandomCell(defensiveCells);
+      await performUpdateCell(selectRandomCell(defensiveCells));
       return;
     }
 
     // If no winning combinations, just pick a random unoccupied cell
     console.log("Dealer has no winning or defensive moves.");
-    shootRandomCell(unoccupiedCells);
+    await performUpdateCell(selectRandomCell(unoccupiedCells));
   } else {
     // If blank, just pump the shotgun
     console.log("Dealer has a blank shell. Pumping shotgun.");
     console.log("Real Shell: ", shells[0]);
-    pumpShotgun();
+    await performPumpShotgun();
   }
 }

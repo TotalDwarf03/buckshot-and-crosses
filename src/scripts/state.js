@@ -17,8 +17,27 @@ let reloading = false;
 let pumpAnimating = false;
 let currentAimPoint = null;
 
-let dealerTextQueue = [];
-let dealerTextAnimating = false;
+let actionQueue = Promise.resolve();
+let actionQueueRunning = false;
+
+function queueAction(action) {
+  const queuedAction = actionQueue.then(async () => {
+    actionQueueRunning = true;
+
+    try {
+      return await action();
+    } finally {
+      actionQueueRunning = false;
+    }
+  });
+
+  actionQueue = queuedAction.then(
+    () => undefined,
+    () => undefined,
+  );
+
+  return queuedAction;
+}
 
 const CROSSHAIR_OFFSET_X = 817.5;
 const CROSSHAIR_OFFSET_Y = 210;
