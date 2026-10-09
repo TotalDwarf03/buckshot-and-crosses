@@ -3,7 +3,15 @@
  * It initialises the game and sets up event listeners.
  */
 
-window.addEventListener("DOMContentLoaded", () => {
+elements.startButton.addEventListener("click", () => {
+  // Fade out home screen
+  elements.homeLayer.style.opacity = "0";
+
+  setTimeout(() => {
+    elements.homeLayer.style.display = "none";
+  }, 500); // Wait for fade transition to complete
+
+  // Start the game
   setupGlobalEventHandlers();
   setupInteractionHandlers();
   updateHealthDisplay();

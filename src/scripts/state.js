@@ -74,6 +74,9 @@ const elements = {
   dealerContainer: document.getElementById("dealer-container"),
   dealerText: document.getElementById("dealer-text"),
   tableBackdrop: document.getElementById("table-backdrop"),
+  splashScreen: document.getElementById("splash-screen"),
+  homeLayer: document.querySelector(".home-layer"),
+  startButton: document.getElementById("start-button"),
 };
 
 const itemsPerRound = 2;
