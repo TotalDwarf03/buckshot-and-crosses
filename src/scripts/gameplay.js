@@ -47,12 +47,14 @@ async function performUpdateCell(cell) {
           // Empty the grid and update the UI
           resetGrid();
           await performLoadShotgun();
+          await performSwitchTurn();
           return;
         } else {
           await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
           updateHealth(-1);
 
           // TODO: Decide what happens here when the player loses.
+          return;
         }
       } else {
         winCounter++;
@@ -80,12 +82,17 @@ async function performUpdateCell(cell) {
     }
   } else {
     resetShotgun();
-    await animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
+    if (dealerTurn) {
+      await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
+    } else {
+      await animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
+    }
   }
 
   if (shells.length === 1) {
-    // If shotgun empty, new round starts and player goes first
+    // If shotgun empty, new round starts
     await performLoadShotgun();
+    await performSwitchTurn();
     return;
   }
 
@@ -114,11 +121,15 @@ async function performSwitchTurn() {
   );
   if (dealerTurn) {
     dealerTurn = false;
+    console.log("Dealer's turn ended. Player's turn now.");
     await animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
+    console.log("Post text animation. Player's turn now.");
   } else {
     if (!skipTurn) {
       dealerTurn = true;
 
+      console.log("Dealer's turn: ", dealerTurn);
+      console.log("Starting new dealer turn action sequence...");
       await performActionDealerTurn();
     } else {
       await animateDealerText(chooseRandomDialogue("skip"), 1000, 800);
@@ -194,12 +205,6 @@ async function performPumpShotgun(itemUsed = null) {
 
   await delay(1500);
 
-  if (shells.length === 0) {
-    await performLoadShotgun();
-    pumpAnimating = false;
-    return;
-  }
-
   if (itemUsed === "expired-vodka" || itemUsed === "custom-flashlight") {
     pumpAnimating = false;
     return;
@@ -208,23 +213,39 @@ async function performPumpShotgun(itemUsed = null) {
   if (currentShell !== "blank") {
     if (dealerTurn) {
       await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
+      console.log("Dealer pump mistake");
     } else {
       await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
     }
+
+    if (shells.length === 0) {
+      await performLoadShotgun();
+    }
+
+    pumpAnimating = false;
 
     await performSwitchTurn();
   } else {
     if (dealerTurn) {
       // If blank pump on dealer turn, dealer takes another
+
+      if (shells.length === 0) {
+        await performLoadShotgun();
+        pumpAnimating = false;
+      }
+      console.log("Dealer pump blank, taking another turn");
       await performActionDealerTurn();
     } else {
       // If blank pump on player turn, just show dialogue
       // Player can then take another turn
       await animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+
+      if (shells.length === 0) {
+        await performLoadShotgun();
+        pumpAnimating = false;
+      }
     }
   }
-
-  pumpAnimating = false;
 }
 
 function pickupShotgun() {
@@ -341,7 +362,7 @@ async function performLoadShotgun(generateItem = true) {
 
   // When loading the shotgun, this indicates a new round.
   // The player should always go first here.
-  dealerTurn = false;
+  // dealerTurn = false;
 
   for (let i = 0; i < itemsPerRound; i++) {
     addItem(generateItem);
