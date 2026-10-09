@@ -211,7 +211,7 @@ async function performPumpShotgun(itemUsed = null) {
     } else {
       await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
     }
-    
+
     await performSwitchTurn();
   } else {
     if (dealerTurn) {
@@ -483,7 +483,6 @@ function actionDealerTurn() {
 }
 
 async function performActionDealerTurn() {
-
   await delay(1000); // Simulate dealer thinking time
 
   const chances = {
