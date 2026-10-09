@@ -6,7 +6,7 @@ Items will be used to help/harm the player, and will be randomly added to the pl
 
 ## Item Generation
 
-Items will be generated randomly at the start of each _round_ (when the shotgun is loaded). The player can have up to a maximum of 3 items in their inventory at any time. If the player has 3 items, they will not be able to pick up any more items until they use one.
+Items will be generated randomly at the start of each _round_ (when the shotgun is loaded). The player can have up to a maximum of 2 items in their inventory at any time. If the player has 2 items, they will not receive any more items until they use one.
 
 ## Item List
 

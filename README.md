@@ -24,7 +24,7 @@ The curriculum for the module can be found here: [IS3S664 - Advanced Internet an
 
 ## Getting Started
 
-To get started with the project, you can simply clone the repository and open the `index.html` file in your web browser.
+To get started with the project, you can simply clone the repository and open the `src/index.html` file in your web browser.
 
 ## Disclaimer
 
@@ -85,4 +85,4 @@ The functionality of the game has been implemented by hand, alongside brainstorm
 
 ## Credits and Acknowledgements
 
-TBC
+- Game inspired by [Buckshot Roulette](https://store.steampowered.com/app/2835570/Buckshot_Roulette/), developed by Mike Klubnika.

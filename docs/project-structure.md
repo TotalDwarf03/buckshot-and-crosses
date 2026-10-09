@@ -27,7 +27,7 @@ This contains static assets (mainly images) used in the project. These assets ar
 
 ## components/
 
-This contains custom elements that are used in the project. Each component is defined as its own JavaScript module and can be imported into the main application as needed.
+This contains custom elements that are used in the project. Each component is defined in its own JavaScript file and loaded into the page via script tags in `src/index.html`.
 
 Currently, these elements are used for game items since they have unique functionality with some shared traits.
 Custom elements were used so that the items can be easily maintained and the objects can be easily created and destroyed as needed.
@@ -40,7 +40,10 @@ Script contain the following files which handle different aspects of the applica
 
 - `main.js`: This is the entry point of the application. It initializes the game and sets up event listeners.
 - `render.js`: This file contains functions that handle rendering the game state to the DOM. It updates the visual representation of the game based on the current state (i.e. updating the health and inventory).
-- `gameplay.js`: This file contains the core gameplay logic. It handles user input, game state updates, and interactions between game elements.
+- `gameplay.js`: This file contains turn flow and win resolution logic.
+- `shotgun.js`: This file contains shotgun-specific interaction, pump, reload, and shell animation logic.
+- `dealer.js`: This file contains dealer decision-making and dealer turn execution logic.
+- `dialogue.js`: This file contains dealer dialogue data and helper logic for picking dialogue lines.
 - `state.js`: This file manages the game state, including the player's health, inventory, and other relevant data. Splitting game state into its own file allows for easier management and potential future expansion of the game.
 - `utils.js`: This file contains utility functions that are used throughout the application. These functions can be reused in different parts of the codebase, promoting code reusability and maintainability.
 

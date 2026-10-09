@@ -3,7 +3,7 @@
 The gameplay loop follows a simple structure:
 
 1. A random number of shells are loaded into the shotgun (between 2 and 5).
-2. The player receives a maximum of 2 items per round, with them being able to keep up to 3 items in their inventory at any given time.
+2. The player receives 1 item per round, with them being able to keep up to 2 items in their inventory at any given time.
    1. If the player's inventory is full, they will not receive any new items until they use an item.
 3. The player takes their turn, which consists of using items (as many as they have), pumping the shotgun or shooting the shotgun at the grid. There are 3 possible outcomes of the player's turn:
    1. The player pumps the shotgun with a blank shell. This lets the player take another turn.

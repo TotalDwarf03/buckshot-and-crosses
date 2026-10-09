@@ -20,12 +20,12 @@ The process works as follows:
 
 - An action is added to the queue using `queueAction(action)`. This function takes a function as an argument, which represents the action to be executed.
 - The `queueAction` function adds the action to the `actionQueue` promise chain. It does this by chaining a `.then()` call to the existing `actionQueue` promise, which ensures that the new action will be executed after all previously queued actions have completed.
-- The `actionQueueRunning` flag is used to prevent multiple instances of the action queue from running simultaneously. When an action is added to the queue, the function checks if the queue is already running. If it is not, it sets the flag to `true` and starts executing the actions in the queue.
+- The `actionQueueRunning` flag is used to indicate whether a queued action is currently running. The flag is set to `true` when a queued action begins execution and reset to `false` when it finishes.
 - Once an action is executed, it is expected to return a promise that resolves when the action is complete. This allows the next action in the queue to be executed only after the previous action has finished.
 
 In summary:
 
 - Actions are added to the queue using `queueAction(action)`.
 - Actions are queued up in a promise chain, ensuring they are executed in order.
-- The `actionQueueRunning` flag prevents multiple instances of the queue from running simultaneously.
+- The `actionQueueRunning` flag shows whether a queued action is currently in progress.
 - Each action is expected to return a promise that resolves when the action is complete, allowing the next action to be executed in sequence.

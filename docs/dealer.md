@@ -30,11 +30,11 @@ To ensure that the dealer's dialogue is varied and interesting, a dialogue syste
 
 For example, if the player tries to shoot at a cell that is already occupied, the dealer will display a message from the "occupied" pool of messages. If the player shoots at a blank cell, the dealer will display a message from the "blank" pool of messages.
 
-This system is controlled by the `dialogue.js` script, which contains the logic for selecting the dealer's messages.
+This system is controlled by the `dialogue.js` script, which contains the dialogue data and logic for selecting the dealer's messages.
 
 ## Dealer turn logic
 
-The dealer's turn logic is implemented as part of `switchTurn()` in `gameplay.js`.
+The dealer's turn logic is triggered by turn switching in `gameplay.js`, but the dealer's decision-making and action execution are implemented in `dealer.js`.
 
 The dealer uses the following logic to determine his next move:
 
