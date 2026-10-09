@@ -185,3 +185,8 @@ function animateDealerText(
     }, totalDuration);
   });
 }
+
+function updateTableBackdrop(winCounter) {
+  const tableBackdrop = elements.tableBackdrop;
+  tableBackdrop.style.backgroundImage = `url('assets/backdrops/table-${winCounter}-win.png')`;
+}

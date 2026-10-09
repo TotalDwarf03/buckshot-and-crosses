@@ -56,6 +56,7 @@ async function performUpdateCell(cell) {
         }
       } else {
         winCounter++;
+        updateTableBackdrop(winCounter);
 
         if (winCounter !== 2) {
           await animateDealerText(chooseRandomDialogue("playerWin"), 1000, 800);
@@ -205,15 +206,22 @@ async function performPumpShotgun(itemUsed = null) {
   }
 
   if (currentShell !== "blank") {
-    await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
+    if (dealerTurn) {
+      await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
+    } else {
+      await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
+    }
+    
     await performSwitchTurn();
-  } else if (dealerTurn) {
-    // If blank pump on dealer turn, dealer takes another
-    await performActionDealerTurn();
   } else {
-    // If blank pump on player turn, just show dialogue
-    // Player can then take another turn
-    await animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+    if (dealerTurn) {
+      // If blank pump on dealer turn, dealer takes another
+      await performActionDealerTurn();
+    } else {
+      // If blank pump on player turn, just show dialogue
+      // Player can then take another turn
+      await animateDealerText(chooseRandomDialogue("eject"), 1000, 800);
+    }
   }
 
   pumpAnimating = false;
@@ -475,6 +483,9 @@ function actionDealerTurn() {
 }
 
 async function performActionDealerTurn() {
+
+  await delay(1000); // Simulate dealer thinking time
+
   const chances = {
     x: calculateShellProbabilities("x"),
     o: calculateShellProbabilities("o"),

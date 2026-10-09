@@ -73,6 +73,7 @@ const elements = {
   ],
   dealerContainer: document.getElementById("dealer-container"),
   dealerText: document.getElementById("dealer-text"),
+  tableBackdrop: document.getElementById("table-backdrop"),
 };
 
 const itemsPerRound = 2;

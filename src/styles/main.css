@@ -145,7 +145,7 @@ body {
 #table-backdrop {
   position: absolute;
   inset: 0;
-  background-image: url("../assets/backdrops/table.png");
+  background-image: url("../assets/backdrops/table-0-win.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;

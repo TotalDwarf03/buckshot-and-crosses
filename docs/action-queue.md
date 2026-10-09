@@ -29,7 +29,3 @@ In summary:
 - Actions are queued up in a promise chain, ensuring they are executed in order.
 - The `actionQueueRunning` flag prevents multiple instances of the queue from running simultaneously.
 - Each action is expected to return a promise that resolves when the action is complete, allowing the next action to be executed in sequence.
-
-## Queue debugging
-
-TODO: introduce some debugging tool to visualise the queue and its state. It's quite hard to understand what is happening when and why, so this is much needed.

@@ -15,6 +15,11 @@ const dealerDialogue = {
     "Better luck next time.",
   ],
   eject: ["Wise choice.", "Good call.", "Lucky you."],
+  mistake: [
+    "Hmm, I thou-, never mind.",
+    "Interesting...",
+    "All part of my plan.",
+  ],
   occupied: [
     "That one's taken!",
     "Someone beat you to it.",
@@ -31,7 +36,6 @@ const dealerDialogue = {
     "Looks like a stalemate.",
     "Back to square one.",
     "It's not over yet.",
-    "Better than I thought.",
   ],
   dealerWin: [
     "Ooh! That must've hurt.",
