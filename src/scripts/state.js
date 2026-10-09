@@ -43,7 +43,7 @@ const CROSSHAIR_OFFSET_X = 817.5;
 const CROSSHAIR_OFFSET_Y = 210;
 
 // When changing this, also update the CSS variable --max-health in src/styles/main.css
-const MAX_HEALTH = 4;
+const MAX_HEALTH = 3;
 
 const SHELL_TYPES = ["x", "o", "blank"];
 const SHELL_PRIORITY = { x: 1, o: 2, blank: 3 };
@@ -79,9 +79,9 @@ const elements = {
   startButton: document.getElementById("start-button"),
 };
 
-const itemsPerRound = 2;
+const itemsPerRound = 1;
 
-let items = Array(3).fill(null);
+let items = Array(2).fill(null);
 let health = 2;
 let previousShot;
 

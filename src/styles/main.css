@@ -8,7 +8,7 @@
   --color-vignette: rgba(0, 0, 0, 0.8);
   --size-health-point: 5rem;
   --size-inventory-slot: 5rem;
-  --max-health: 4;
+  --max-health: 3;
 }
 
 html,
