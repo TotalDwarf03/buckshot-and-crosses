@@ -22,7 +22,7 @@ class StrangeContraption extends InventoryItemBase {
       grid = Array(9).fill(null);
 
       // Empty all cells
-      const cells = document.querySelectorAll(".grid-item");
+      const cells = elements.grid.querySelectorAll(".grid-item");
       cells.forEach((cell) => {
         cell.innerHTML = "";
       });

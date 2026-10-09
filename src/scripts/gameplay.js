@@ -136,10 +136,6 @@ function resetGrid() {
   win = null;
 }
 
-function switchTurn() {
-  return queueAction(() => performSwitchTurn());
-}
-
 async function handTurnToPlayer() {
   dealerTurn = false;
   console.log("Dealer's turn ended. Player's turn now.");

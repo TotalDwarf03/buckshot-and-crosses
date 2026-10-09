@@ -1,3 +1,7 @@
+/**
+ * This file contains dealer dialogue lookup data and selection helpers.
+ */
+
 function chooseRandomDialogue(key) {
   const dialogueArray = dealerDialogue[key];
 

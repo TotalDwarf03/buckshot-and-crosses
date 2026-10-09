@@ -39,7 +39,7 @@ function setupInteractionHandlers() {
 }
 
 function handlePointerLockChange() {
-  if (shotgunPickedUp && document.pointerLockElement == null) {
+  if (shotgunPickedUp && document.pointerLockElement === null) {
     resetShotgun();
   }
 }
@@ -51,13 +51,13 @@ function handleDocumentKeydown(event) {
 }
 
 function toggleWaiver(visible) {
-  const waiver = document.getElementById("waiver");
+  const waiver = elements.waiver;
 
   if (!visible) {
     waiver.classList.remove("is-visible");
     waiver.classList.add("is-exiting");
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       waiver.classList.remove("is-exiting");
       waiver.style.display = "none";
     }, 320);

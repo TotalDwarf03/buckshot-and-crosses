@@ -222,7 +222,7 @@ async function performLoadShotgun(generateItem = true) {
   // The player should always go first here.
   // dealerTurn = false;
 
-  for (let i = 0; i < itemsPerRound; i++) {
+  for (let i = 0; i < ITEMS_PER_ROUND; i++) {
     addItem(generateItem);
   }
 

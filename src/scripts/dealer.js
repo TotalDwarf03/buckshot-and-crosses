@@ -45,10 +45,6 @@ function selectRandomCell(cellOptions) {
   return cellOptions[randint(0, cellOptions.length - 1)];
 }
 
-function actionDealerTurn() {
-  return queueAction(() => performActionDealerTurn());
-}
-
 function getDealerShellChances() {
   return {
     x: calculateShellProbabilities("x"),
