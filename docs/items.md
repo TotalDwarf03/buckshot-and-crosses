@@ -8,9 +8,9 @@ One random item is added whenever the shotgun is loaded, if there is an empty in
 
 ## Item List
 
-### Handcuffs
+### Jammer
 
-Skips the dealer's next turn.
+Disrupts the dealer's phone and skips its next turn.
 
 ### Flashlight
 

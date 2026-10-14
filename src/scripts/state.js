@@ -45,7 +45,7 @@ const SHELL_TIMINGS = {
 };
 
 const availableItems = [
-  "custom-handcuffs",
+  "custom-jammer",
   "custom-flashlight",
   "cigarette-pack",
   "strange-contraption",
