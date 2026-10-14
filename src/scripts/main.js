@@ -42,6 +42,7 @@ function setupInteractionHandlers() {
     elements.briefcase.disabled = true;
 
     setTimeout(() => {
+      elements.statusText.textContent = "Spend your winnings wisely!";
       elements.endScreen.classList.add("is-visible");
     }, 3000);
   });

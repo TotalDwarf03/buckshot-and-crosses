@@ -74,8 +74,10 @@ body {
   inset: 0;
   z-index: 60;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
   background: var(--color-background);
   opacity: 0;
   visibility: hidden;
@@ -83,6 +85,17 @@ body {
   transition:
     opacity 1s ease,
     visibility 0s 1s;
+}
+
+#status-text {
+  max-width: min(90vw, 40rem);
+  margin: 0;
+  padding: 0.5rem 1rem;
+  color: var(--color-ui);
+  font-size: 1.25rem;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 #end-screen.is-visible {

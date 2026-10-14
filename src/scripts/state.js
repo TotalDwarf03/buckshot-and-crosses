@@ -85,6 +85,7 @@ const elements = {
   waiver: document.getElementById("waiver"),
   briefcase: document.getElementById("briefcase"),
   briefcaseImage: document.getElementById("briefcase-image"),
+  statusText: document.getElementById("status-text"),
   endScreen: document.getElementById("end-screen"),
   restartButton: document.getElementById("restart-button"),
   homeLayer: document.querySelector(".home-layer"),

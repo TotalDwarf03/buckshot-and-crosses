@@ -39,7 +39,8 @@ async function handleDealerRoundWin() {
   await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
   updateHealth(-1);
 
-  // TODO: Decide what happens here when the player loses.
+  elements.statusText.textContent = "You're lucky he's letting you live...";
+  elements.endScreen.classList.add("is-visible");
   return true;
 }
 
@@ -75,6 +76,7 @@ async function handleShotOutcome() {
     // Empty the grid and update the UI
     resetGrid();
     await performLoadShotgun();
+    await performSwitchTurn();
     return true;
   }
 
