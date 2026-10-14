@@ -7,6 +7,10 @@ class Jammer extends InventoryItemBase {
     return "Jammer";
   }
 
+  get description() {
+    return "Skips the dealer's next turn.";
+  }
+
   useItem() {
     skipTurn = true;
     this.consume();

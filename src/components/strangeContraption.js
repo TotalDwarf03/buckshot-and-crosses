@@ -7,6 +7,10 @@ class StrangeContraption extends InventoryItemBase {
     return "Strange Contraption";
   }
 
+  get description() {
+    return "May undo the last shot, do nothing, or reset the board and cost one health.";
+  }
+
   useItem() {
     // 60% revert previous shot, 30% do nothing, 10% blow up
     const roll = randint(1, 100);

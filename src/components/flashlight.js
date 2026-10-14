@@ -7,6 +7,10 @@ class Flashlight extends InventoryItemBase {
     return "Flashlight";
   }
 
+  get description() {
+    return "Reveals the current shell without consuming it.";
+  }
+
   useItem() {
     // Reveal current shell to player
     pumpShotgun("custom-flashlight");

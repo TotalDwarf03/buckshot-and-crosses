@@ -17,6 +17,7 @@ class InventoryItemBase extends HTMLElement {
   renderItem() {
     this.innerHTML = `
       <img src="${this.imageSource}" alt="${this.altText}" class="inventory-item" />
+      <span class="item-tooltip" role="tooltip"><strong>${this.altText}</strong>${this.description}</span>
     `;
   }
 
