@@ -112,7 +112,8 @@ function pickupShotgun() {
     reloading ||
     pumpAnimating ||
     actionQueueRunning ||
-    dealerTurn
+    dealerTurn ||
+    winCounter >= 2
   ) {
     return;
   }

@@ -83,6 +83,10 @@ const elements = {
   dealerText: document.getElementById("dealer-text"),
   tableBackdrop: document.getElementById("table-backdrop"),
   waiver: document.getElementById("waiver"),
+  briefcase: document.getElementById("briefcase"),
+  briefcaseImage: document.getElementById("briefcase-image"),
+  endScreen: document.getElementById("end-screen"),
+  restartButton: document.getElementById("restart-button"),
   homeLayer: document.querySelector(".home-layer"),
   startButton: document.getElementById("start-button"),
 };

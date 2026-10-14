@@ -36,6 +36,19 @@ function setupGlobalEventHandlers() {
 
 function setupInteractionHandlers() {
   elements.shotgunImage.addEventListener("click", pickupShotgun);
+  elements.briefcase.addEventListener("click", () => {
+    elements.briefcaseImage.src = "assets/briefcase/briefcase-open.png";
+    elements.briefcaseImage.alt = "Opened briefcase";
+    elements.briefcase.disabled = true;
+
+    setTimeout(() => {
+      elements.endScreen.classList.add("is-visible");
+    }, 3000);
+  });
+
+  elements.restartButton.addEventListener("click", () => {
+    window.location.reload();
+  });
 }
 
 function handlePointerLockChange() {

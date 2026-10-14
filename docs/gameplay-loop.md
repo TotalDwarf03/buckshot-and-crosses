@@ -27,7 +27,7 @@ If the player still has health points remaining, the board will reset and the pl
 
 If the player wins, the win counter will increase by 1.
 
-If the player wins twice, the player will win the game and something will happen (TODO: Decide what happens when the player wins the game).
+If the player wins twice, the game ends and a briefcase drops into the centre of the screen. The player can click it to open it. After a few seconds, the screen fades to black and displays a Restart button that reloads the page.
 
 If the player has not won twice, the board will reset and the player will continue playing.
 

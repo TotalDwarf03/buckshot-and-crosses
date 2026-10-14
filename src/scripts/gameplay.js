@@ -57,8 +57,9 @@ async function handlePlayerRoundWin() {
   // Player has won 2 rounds, they win the game
   await animateDealerText(chooseRandomDialogue("gameWin"), 1000, 800);
 
-  // TODO: Decide what happens here when the player wins.
-  return false;
+  elements.briefcase.disabled = false;
+  elements.briefcase.classList.add("is-visible");
+  return true;
 }
 
 async function handleShotOutcome() {
