@@ -36,7 +36,7 @@ Custom elements were used so that the items can be easily maintained and the obj
 
 This contains the JavaScript files that handle the logic of the application.
 
-Script contain the following files which handle different aspects of the application:
+The scripts are split across the following files, each handling a different aspect of the application:
 
 - `main.js`: This is the entry point of the application. It initializes the game and sets up event listeners.
 - `render.js`: This file contains functions that handle rendering the game state to the DOM. It updates the visual representation of the game based on the current state (i.e. updating the health and inventory).
@@ -46,8 +46,6 @@ Script contain the following files which handle different aspects of the applica
 - `dialogue.js`: This file contains dealer dialogue data and helper logic for picking dialogue lines.
 - `state.js`: This file manages the game state, including the player's health, inventory, and other relevant data. Splitting game state into its own file allows for easier management and potential future expansion of the game.
 - `utils.js`: This file contains utility functions that are used throughout the application. These functions can be reused in different parts of the codebase, promoting code reusability and maintainability.
-
-> **Note:** Each file contains a comment block at the top that describes its purpose and functionality. This helps developers understand the role of each file and how they contribute to the overall application.
 
 ## styles/
 

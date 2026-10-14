@@ -1,36 +1,25 @@
 # Gameplay Loop
 
-The gameplay loop follows a simple structure:
+## Setup
 
-1. A random number of shells are loaded into the shotgun (between 2 and 5).
-2. The player receives 1 item per round, with them being able to keep up to 2 items in their inventory at any given time.
-   1. If the player's inventory is full, they will not receive any new items until they use an item.
-3. The player takes their turn, which consists of using items (as many as they have), pumping the shotgun or shooting the shotgun at the grid. There are 3 possible outcomes of the player's turn:
-   1. The player pumps the shotgun with a blank shell. This lets the player take another turn.
-   2. The player pumps the shotgun with an x or o shell. This switches the turn to the dealer.
-   3. The player shoots the shotgun at the grid. This will use the current shell in the shotgun and will either place an x or o on the grid, or will result in a miss. Once the player shoots, the turn switches to the dealer.
-4. The dealer takes their turn. This process is outlined in the [dealer's turn](./dealer.md) documentation.
-5. The turns will then keep switching until a player lines up 3 of their symbols in a row, or until the grid is full. Once one of these conditions is met, the following will happen:
-   1. If a player lines up 3 of their symbols in a row, they will have beaten the dealer. This will result in a win for the player.
-   2. If the grid is full and no player has lined up 3 of their symbols in a row, the game will result in a draw.
-   3. If the dealer lines up 3 of their symbols in a row, the player will have lost to the dealer. This will result in a loss for the player.
+The player starts with two health points, with a maximum of three. The first shotgun load begins the player's turn. Each load contains 2 to 5 randomly selected shells: X, O, or blank. The set is rerolled until it contains at least one X shell and one O shell; blank shells are not guaranteed.
 
-## Dealer Wins
+One random item is added per load if an inventory slot is available. The inventory has two slots, and a full inventory receives no new item.
 
-If the dealer wins, the player will lose 1 health point.
+## Turns
 
-If the player has 0 health points, they will lose the game and something will happen (TODO: Decide what happens when the player loses the game).
+On their turn, the player can use inventory items, pick up the shotgun to aim and shoot an empty square, or pump the shotgun with Space. Escape cancels aiming. The dealer takes its turn automatically after the player's turn; see [Dealer](./dealer.md) for its decision logic.
 
-If the player still has health points remaining, the board will reset and the player will continue playing.
+A shot consumes the current shell. An X or O shell places that mark in the chosen square; a blank shell leaves the square empty. After a shot, the turn passes to the other side, except that using the last shell triggers a reload before the turn changes.
 
-## Player Wins
+Pumping consumes and reveals the current shell. Pumping a blank gives the same side another turn. Pumping an X or O passes the turn to the other side. Items can alter this behavior; see [Items](./items.md).
 
-If the player wins, the win counter will increase by 1.
+## Round Outcomes
 
-If the player wins twice, the game ends and a briefcase drops into the centre of the screen. The player can click it to open it. After a few seconds, the screen fades to black and displays a Restart button that reloads the page.
+The shooter wins the round by completing a row, column, or diagonal of three matching nonblank marks. The marks are determined by the shells, not by which side fired them. If all nine squares are filled without a line, the round is a draw.
 
-If the player has not won twice, the board will reset and the player will continue playing.
+When the dealer wins, the player loses one health point. If the player had one health point before the loss, the game ends with a loss screen. Otherwise, the board and shotgun are reset for another round, and the player goes next.
 
-## Draw
+When the player wins, the win counter increases. Their first round win resets the board and shotgun for another round. Winning twice ends the game: the player can open the briefcase, after which the restart screen appears.
 
-If the game results in a draw, the board will reset and the player will continue playing.
+A draw resets the board and reloads the shotgun without changing health or the win counter; turns continue according to the side that was due to act next.

@@ -34,7 +34,13 @@ Although the layout is responsive for smaller screens, the game mechanics and co
 
 ## About the Game
 
-TBC
+Buckshot and Crosses is a single-player, desktop browser game that combines a 3×3 Noughts and Crosses board with a shotgun loaded with random X, O, and blank shells. The player and the dealer take turns firing at empty squares; the shooter who completes a line of three matching marks wins the round.
+
+The player must win 2 rounds to win the game. The player starts with two health points and can collect single-use items to change the odds.
+
+Click **Start** and then the waiver to begin. Click the shotgun to aim, move the pointer over an empty square, and click to shoot. Press **Space** to pump the shotgun or **Escape** to stop aiming. The game requires a keyboard and mouse.
+
+For more information about game mechanics and rules, please refer to the documentation in the `docs` directory. This does also include some technical details about the implementation and structure of the project.
 
 ## Documentation
 
@@ -42,9 +48,9 @@ Further documentation about the project can be found in the `docs` directory.
 
 ## Linting and Formatting
 
-This project uses GitHub Actions to run Prettier and Markdownlint on push and pull requests to the `main` branch. These action can be found in the `.github/workflows` directory.
+This project uses GitHub Actions to run Prettier and Markdownlint on pushes and pull requests to the `main` branch. These workflows are in the `.github/workflows` directory.
 
-These action will check for formatting and linting issues in the codebase. If any issues are found, the action will fail and provide feedback on what needs to be fixed.
+These workflows check for formatting and linting issues in the codebase. If any issues are found, the workflow will fail and provide feedback on what needs to be fixed.
 
 To fix any issues, you will need to run the tools locally using the instructions below.
 

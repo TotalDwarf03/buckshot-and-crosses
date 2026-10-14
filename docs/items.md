@@ -1,31 +1,29 @@
 # Items
 
-A series of items will be implemented into the game, largely based on the ones in Buckshot Roulette.
+Items are single-use effects inspired by Buckshot Roulette. The player can use them to change the state of a turn or board.
 
-Items will be used to help/harm the player, and will be randomly added to the player's inventory. The player can use these items at any time during their turn, and they will have a variety of effects. All items will be single use.
+## Item Generation and Inventory
 
-## Item Generation
-
-Items will be generated randomly at the start of each _round_ (when the shotgun is loaded). The player can have up to a maximum of 2 items in their inventory at any time. If the player has 2 items, they will not receive any more items until they use one.
+One random item is added whenever the shotgun is loaded, if there is an empty inventory slot. The inventory holds at most two items. Items are consumed when used.
 
 ## Item List
 
 ### Handcuffs
 
-Skips the next player's turn.
+Skips the dealer's next turn.
 
 ### Flashlight
 
-Reveals the current shell in the shotgun.
+Reveals the current shell without consuming it or changing turns.
 
 ### Cigarette Pack
 
-Restores a life to the user.
+Restores one health point, up to the maximum of three.
 
 ### Strange Contraption
 
-Has a 60% chance to revert the previous board action, a 30% chance to do nothing, and a 10% chance to blow up - resetting the board and making the user lose a life.
+Has a chance to remove the most recent shot from the board, do nothing, or reset the board and cost the player one health point. If there is no previous shot, the remove-shot outcome has no effect.
 
 ### Expired Vodka
 
-Pumps the shotgun, giving the user a second turn, regardless of the current shell.
+Pumps and consumes the current shell without passing the turn, regardless of whether it is blank, X, or O. If that empties the shotgun, it is reloaded.
