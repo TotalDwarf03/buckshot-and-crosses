@@ -3,6 +3,10 @@
  */
 
 function pumpShotgun(itemUsed = null) {
+  if (!canPlayerUseControls()) {
+    return;
+  }
+
   return queueAction(() => performPumpShotgun(itemUsed));
 }
 
@@ -107,14 +111,7 @@ async function performPumpShotgun(itemUsed = null) {
 }
 
 function pickupShotgun() {
-  if (
-    shotgunPickedUp ||
-    reloading ||
-    pumpAnimating ||
-    actionQueueRunning ||
-    dealerTurn ||
-    winCounter >= 2
-  ) {
+  if (shotgunPickedUp || !canPlayerUseControls()) {
     return;
   }
 

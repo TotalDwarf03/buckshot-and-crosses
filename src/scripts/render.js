@@ -6,6 +6,13 @@ function getGridBounds() {
   return elements.grid.getBoundingClientRect();
 }
 
+function updatePlayerControls() {
+  document.body.classList.toggle(
+    "player-controls-disabled",
+    !canPlayerUseControls(),
+  );
+}
+
 function hideHUD(hide) {
   elements.shellContainer.classList.toggle("aiming", hide);
   elements.shotgunContainer.classList.toggle("aiming", hide);

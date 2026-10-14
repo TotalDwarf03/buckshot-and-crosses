@@ -92,14 +92,26 @@ const elements = {
   startButton: document.getElementById("start-button"),
 };
 
+function canPlayerUseControls() {
+  return !(
+    dealerTurn ||
+    actionQueueRunning ||
+    reloading ||
+    pumpAnimating ||
+    winCounter >= 2
+  );
+}
+
 function queueAction(action) {
   const queuedAction = actionQueue.then(async () => {
     actionQueueRunning = true;
+    updatePlayerControls();
 
     try {
       return await action();
     } finally {
       actionQueueRunning = false;
+      updatePlayerControls();
     }
   });
 

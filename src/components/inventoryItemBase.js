@@ -1,7 +1,13 @@
 class InventoryItemBase extends HTMLElement {
   connectedCallback() {
     this.renderItem();
-    this.addEventListener("click", () => this.useItem(this.slot));
+    this.addEventListener("click", () => {
+      if (!canPlayerUseControls()) {
+        return;
+      }
+
+      this.useItem(this.slot);
+    });
   }
 
   get slot() {
