@@ -583,7 +583,6 @@ body.hud-hidden #health-container {
   transform: translateY(0.5rem);
 }
 
-body.aiming .base-layer,
 body.aiming .notifications-layer,
 body.aiming .hud-layer,
 body.aiming #dealer-container,

@@ -42,6 +42,7 @@ function startGame() {
 
 function setupGlobalEventHandlers() {
   document.addEventListener("pointerlockchange", handlePointerLockChange);
+  document.addEventListener("pointerlockerror", handlePointerLockError);
   document.addEventListener("keydown", handleDocumentKeydown);
 }
 
@@ -70,6 +71,12 @@ function setupInteractionHandlers() {
 
 function handlePointerLockChange() {
   if (shotgunPickedUp && document.pointerLockElement === null) {
+    resetShotgun();
+  }
+}
+
+function handlePointerLockError() {
+  if (shotgunPickedUp && document.pointerLockElement !== document.body) {
     resetShotgun();
   }
 }

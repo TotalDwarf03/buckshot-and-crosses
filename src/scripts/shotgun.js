@@ -130,15 +130,25 @@ function pickupShotgun() {
   }
 
   crosshairListener = (event) => {
-    if (document.pointerLockElement) {
-      setAimPosition(
-        currentAimPoint.x + event.movementX,
-        currentAimPoint.y + event.movementY,
-      );
+    if (document.pointerLockElement !== document.body) {
       return;
     }
 
-    setAimPosition(event.clientX, event.clientY);
+    const gridBounds = getGridBounds();
+
+    // Limit the movement to a fraction of the grid size to prevent sudden jumps
+    if (
+      Math.abs(event.movementX) > gridBounds.width / 12 ||
+      Math.abs(event.movementY) > gridBounds.height / 12
+    ) {
+      return;
+    }
+
+    // Update the aim position based on the mouse movement within the allowed range
+    setAimPosition(
+      currentAimPoint.x + event.movementX,
+      currentAimPoint.y + event.movementY,
+    );
   };
 
   document.addEventListener("mousemove", crosshairListener);
@@ -180,9 +190,12 @@ function pickupShotgun() {
 
   document.addEventListener("keydown", pumpListener);
 
-  if (document.body.requestPointerLock) {
-    document.body.requestPointerLock();
+  if (!document.body.requestPointerLock) {
+    resetShotgun();
+    return;
   }
+
+  document.body.requestPointerLock()?.catch(handlePointerLockError);
 }
 
 function resetShotgun() {
