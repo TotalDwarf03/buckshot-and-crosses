@@ -69,27 +69,21 @@ function chooseDealerTargetCell(shellType) {
   const winningCells = findWinningCells(shellType);
 
   if (winningCells.length > 0) {
-    console.log("Dealer has a winning move!");
     return selectRandomCell(winningCells);
   }
 
   const defensiveCells = findWinningCells(shellType === "x" ? "o" : "x");
 
   if (defensiveCells.length > 0) {
-    console.log("Dealer has a defensive move!");
     return selectRandomCell(defensiveCells);
   }
 
-  console.log("Dealer has no winning or defensive moves.");
   return selectRandomCell(getUnoccupiedCells());
 }
 
 function chooseDealerAction() {
   const chances = getDealerShellChances();
   const shellType = getHighestChanceShellType(chances);
-
-  console.log("Dealer's shell probabilities:", chances);
-  console.log("Dealer's highest chance shell type:", shellType);
 
   if (["x", "o"].includes(shellType)) {
     return {
@@ -107,8 +101,6 @@ async function executeDealerAction(action) {
     return;
   }
 
-  console.log("Dealer has a blank shell. Pumping shotgun.");
-  console.log("Real Shell: ", shells[0]);
   await performPumpShotgun();
 }
 

@@ -146,26 +146,15 @@ function resetGrid() {
 
 async function handTurnToPlayer() {
   dealerTurn = false;
-  console.log("Dealer's turn ended. Player's turn now.");
   await animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
-  console.log("Post text animation. Player's turn now.");
 }
 
 async function handTurnToDealer() {
   dealerTurn = true;
-  console.log("Dealer's turn: ", dealerTurn);
-  console.log("Starting new dealer turn action sequence...");
   await performActionDealerTurn();
 }
 
 async function performSwitchTurn() {
-  console.log(
-    "Switching turn. Dealer turn:",
-    dealerTurn,
-    "Skip turn:",
-    skipTurn,
-  );
-
   if (dealerTurn) {
     await handTurnToPlayer();
     return;

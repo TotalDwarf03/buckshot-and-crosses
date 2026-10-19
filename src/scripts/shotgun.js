@@ -64,7 +64,6 @@ async function reloadIfShotgunEmpty() {
 async function resolveLivePump() {
   if (dealerTurn) {
     await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
-    console.log("Dealer pump mistake");
   } else {
     await animateDealerText(chooseRandomDialogue("live"), 1000, 800);
   }
@@ -78,7 +77,6 @@ async function resolveBlankPump() {
   if (dealerTurn) {
     await reloadIfShotgunEmpty();
     pumpAnimating = false;
-    console.log("Dealer pump blank, taking another turn");
     await performActionDealerTurn();
     return;
   }
