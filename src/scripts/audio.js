@@ -30,6 +30,9 @@ const audioClips = Object.fromEntries(
 
 let activeMusic = null;
 
+/** Plays a one-shot sound effect when the requested clip exists.
+ * @param {string} name - Key in AUDIO_EFFECTS.
+ */
 function playSound(name) {
   const clip = audioClips[name];
 
@@ -42,6 +45,9 @@ function playSound(name) {
   playback.play().catch(() => {});
 }
 
+/** Replaces the current music track with the requested track.
+ * @param {string} name - Music filename without its extension.
+ */
 function playMusic(name) {
   if (activeMusic) {
     activeMusic.pause();

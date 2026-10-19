@@ -2,6 +2,10 @@
  * This file contains shotgun-specific interaction, pump, and reload logic.
  */
 
+/** Queues a shotgun pump when the player is allowed to act.
+ * @param {string|null} [itemUsed=null] - Item triggering the pump, if any.
+ * @returns {Promise<*>|undefined} The queued pump, or undefined when blocked.
+ */
 function pumpShotgun(itemUsed = null) {
   if (!canPlayerUseControls()) {
     return;
@@ -10,10 +14,18 @@ function pumpShotgun(itemUsed = null) {
   return queueAction(() => performPumpShotgun(itemUsed));
 }
 
+/** Checks whether an item triggered a special pump that preserves the turn.
+ * @param {string|null} itemUsed - Item triggering the pump.
+ * @returns {boolean} Whether this is an item-triggered pump.
+ */
 function isItemPump(itemUsed) {
   return itemUsed === "expired-vodka" || itemUsed === "custom-flashlight";
 }
 
+/** Retrieves the shell affected by a pump, applying item-specific consumption.
+ * @param {string|null} itemUsed - Item triggering the pump, if any.
+ * @returns {string|undefined} The inspected or removed shell type.
+ */
 function getPumpedShell(itemUsed) {
   switch (itemUsed) {
     case "expired-vodka":
@@ -32,6 +44,10 @@ function getPumpedShell(itemUsed) {
   }
 }
 
+/** Shows the pumped shell animation and waits for it to finish.
+ * @param {string|undefined} currentShell - Shell type being displayed.
+ * @returns {Promise<void>}
+ */
 async function animatePumpedShell(currentShell) {
   elements.shellLoader.innerHTML = "";
 
@@ -55,12 +71,18 @@ async function animatePumpedShell(currentShell) {
   await delay(1500);
 }
 
+/** Reloads the shotgun only when no shells remain.
+ * @returns {Promise<void>}
+ */
 async function reloadIfShotgunEmpty() {
   if (shells.length === 0) {
     await performLoadShotgun();
   }
 }
 
+/** Resolves a live-shell pump, including its dialogue and turn change.
+ * @returns {Promise<void>}
+ */
 async function resolveLivePump() {
   if (dealerTurn) {
     await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
@@ -73,6 +95,9 @@ async function resolveLivePump() {
   await performSwitchTurn();
 }
 
+/** Resolves a blank-shell pump according to whose turn it is.
+ * @returns {Promise<void>}
+ */
 async function resolveBlankPump() {
   if (dealerTurn) {
     await reloadIfShotgunEmpty();
@@ -88,6 +113,10 @@ async function resolveBlankPump() {
   pumpAnimating = false;
 }
 
+/** Animates a pump and handles the resulting shell and turn effects.
+ * @param {string|null} [itemUsed=null] - Item triggering the pump, if any.
+ * @returns {Promise<void>}
+ */
 async function performPumpShotgun(itemUsed = null) {
   pumpAnimating = true;
   playSound("pump-shotgun");
@@ -109,6 +138,8 @@ async function performPumpShotgun(itemUsed = null) {
   await resolveBlankPump();
 }
 
+/** Enters aiming mode and installs mouse, click, and pump-key handlers.
+ */
 function pickupShotgun() {
   if (shotgunPickedUp || !canPlayerUseControls()) {
     return;
@@ -196,6 +227,8 @@ function pickupShotgun() {
   document.body.requestPointerLock()?.catch(handlePointerLockError);
 }
 
+/** Clears aiming state, removes shotgun listeners, and exits pointer lock.
+ */
 function resetShotgun() {
   shotgunPickedUp = false;
   currentAimPoint = null;
@@ -221,10 +254,18 @@ function resetShotgun() {
   }
 }
 
+/** Queues a shotgun reload and optional item generation.
+ * @param {boolean} [generateItem=true] - Whether to generate a round item.
+ * @returns {Promise<string[]>} The loaded shell sequence.
+ */
 function loadShotgun(generateItem = true) {
   return queueAction(() => performLoadShotgun(generateItem));
 }
 
+/** Generates a valid shell set, renders its load animation, and waits for it.
+ * @param {boolean} [generateItem=true] - Whether to generate a round item.
+ * @returns {Promise<string[]>} The loaded shell sequence.
+ */
 async function performLoadShotgun(generateItem = true) {
   reloading = true;
 

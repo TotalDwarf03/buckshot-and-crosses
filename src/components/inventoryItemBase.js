@@ -1,4 +1,6 @@
+/** Shared rendering, slot access, and consumption behavior for inventory items. */
 class InventoryItemBase extends HTMLElement {
+  /** Renders the item and connects its click action when added to the document. */
   connectedCallback() {
     this.renderItem();
     this.addEventListener("click", () => {
@@ -18,10 +20,12 @@ class InventoryItemBase extends HTMLElement {
     });
   }
 
+  /** Zero-based inventory slot occupied by this element. */
   get slot() {
     return Number(this.dataset.slot);
   }
 
+  /** Renders the item's image and tooltip from subclass metadata. */
   renderItem() {
     this.innerHTML = `
       <img src="${this.imageSource}" alt="${this.altText}" class="inventory-item" />
@@ -29,10 +33,12 @@ class InventoryItemBase extends HTMLElement {
     `;
   }
 
+  /** Clears this item's slot in the shared inventory state. */
   clearSlot() {
     items[this.slot] = null;
   }
 
+  /** Removes the item element and clears its inventory slot. */
   consume() {
     this.remove();
     this.clearSlot();

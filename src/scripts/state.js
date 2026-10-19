@@ -92,6 +92,9 @@ const elements = {
   startButton: document.getElementById("start-button"),
 };
 
+/** Reports whether player input is allowed in the current game state.
+ * @returns {boolean} Whether controls can be used.
+ */
 function canPlayerUseControls() {
   return !(
     dealerTurn ||
@@ -103,6 +106,10 @@ function canPlayerUseControls() {
   );
 }
 
+/** Runs an action after prior queued actions and updates control availability.
+ * @param {Function} action - Action to run in sequence.
+ * @returns {Promise<*>} The action's result.
+ */
 function queueAction(action) {
   const queuedAction = actionQueue.then(async () => {
     actionQueueRunning = true;
