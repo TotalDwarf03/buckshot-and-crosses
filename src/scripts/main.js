@@ -6,6 +6,7 @@
 function activateHome(event) {
   event.preventDefault();
   event.stopPropagation();
+  elements.homeLayer.querySelector(".focus-prompt").hidden = true;
   playMusic("blank-shell");
   elements.startButton.addEventListener("click", startGame);
 }

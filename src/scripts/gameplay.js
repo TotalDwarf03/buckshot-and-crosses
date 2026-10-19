@@ -25,7 +25,7 @@ function applyShotToCell(cell, index) {
 }
 
 async function handleDealerRoundWin() {
-  if (health !== 1) {
+  if (health > 1) {
     await animateDealerText(chooseRandomDialogue("dealerWin"), 1000, 800);
     updateHealth(-1);
 
@@ -36,13 +36,20 @@ async function handleDealerRoundWin() {
     return true;
   }
 
+  await handlePlayerGameOver(true);
+  return true;
+}
+
+async function handlePlayerGameOver(loseHealth = false) {
   await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
   playMusic("end");
-  updateHealth(-1);
+
+  if (loseHealth) {
+    updateHealth(-1);
+  }
 
   elements.statusText.textContent = "You're lucky he's letting you live...";
   elements.endScreen.classList.add("is-visible");
-  return true;
 }
 
 async function handlePlayerRoundWin() {

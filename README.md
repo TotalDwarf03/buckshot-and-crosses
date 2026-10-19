@@ -38,7 +38,7 @@ Buckshot and Crosses is a single-player, desktop browser game that combines a 3Ã
 
 The player must win 2 rounds to win the game. The player starts with two health points and can collect single-use items to change the odds.
 
-Click **Start** and then the waiver to begin. Click the shotgun to aim, move the pointer over an empty square, and click to shoot. Press **Space** to pump the shotgun or **Escape** to stop aiming. The game requires a keyboard and mouse.
+Click anywhere to dismiss the **Click to Focus** splash, then click **Start** and sign the waiver to begin. Click the shotgun to aim, move the pointer over an empty square, and click to shoot. Press **Space** to pump the shotgun or **Escape** to stop aiming. The game requires a keyboard and mouse.
 
 For more information about game mechanics and rules, please refer to the documentation in the `docs` directory. This does also include some technical details about the implementation and structure of the project.
 

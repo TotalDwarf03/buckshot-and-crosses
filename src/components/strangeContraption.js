@@ -32,6 +32,10 @@ class StrangeContraption extends InventoryItemBase {
       });
 
       updateHealth(-1);
+
+      if (health === 0) {
+        queueAction(() => handlePlayerGameOver());
+      }
     }
 
     // Remove the strange contraption from the inventory

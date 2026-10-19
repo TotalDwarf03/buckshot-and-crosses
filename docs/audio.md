@@ -12,8 +12,7 @@ finish. Sound effects play at volume `0.65`.
 `playMusic(name)` stops the current music before starting another track. The home
 and in-game background tracks loop at volume `0.35`; the ending track plays once.
 The browser may block audio until the user interacts with the page. The home track
-starts on the first pointer or keyboard interaction, and pressing Start switches
-to the in-game track.
+starts on the first click, and pressing Start switches to the in-game track.
 
 ## Sound Effects
 
@@ -41,6 +40,6 @@ to the in-game track.
 
 ## `music/`
 
-- `music/blank-shell.ogg`: Loops on the home screen, starting after the first pointer or keyboard interaction.
+- `music/blank-shell.ogg`: Loops on the home screen, starting after the first click dismisses the focus splash.
 - `music/background-music.ogg`: Loops after the player presses Start.
 - `music/end.ogg`: Plays when the player opens the briefcase after winning, or when the dealer wins the final game.

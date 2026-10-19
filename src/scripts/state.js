@@ -98,6 +98,7 @@ function canPlayerUseControls() {
     actionQueueRunning ||
     reloading ||
     pumpAnimating ||
+    health <= 0 ||
     winCounter >= 2
   );
 }
