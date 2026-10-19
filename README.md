@@ -84,7 +84,7 @@ This will lint all Markdown files in the project and automatically fix any issue
 AI has been used in this project to assist in the following areas:
 
 - Art and graphics generation (i.e. game assets, branding, etc.)
-- CSS styling and layout **suggestions** - implemented by hand.
+- CSS styling and layout suggestions.
 - Animations and transitions
 
 The functionality of the game has been implemented by hand, alongside brainstorming and planning of the game mechanics, rules and logic.
@@ -92,3 +92,4 @@ The functionality of the game has been implemented by hand, alongside brainstorm
 ## Credits and Acknowledgements
 
 - Game inspired by [Buckshot Roulette](https://store.steampowered.com/app/2835570/Buckshot_Roulette/), developed by Mike Klubnika.
+- Audio and music largely taken from Buckshot Roulette, alongside some non-copyrighted sound effects.
