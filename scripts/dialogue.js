@@ -2,6 +2,10 @@
  * This file contains dealer dialogue lookup data and selection helpers.
  */
 
+/** Selects a random dealer line from the requested dialogue group.
+ * @param {string} key - Key in dealerDialogue.
+ * @returns {string} The selected line.
+ */
 function chooseRandomDialogue(key) {
   const dialogueArray = dealerDialogue[key];
 

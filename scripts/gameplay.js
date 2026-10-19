@@ -3,20 +3,36 @@
  * It handles turn flow and win resolution.
  */
 
+/** Resolves after the requested number of milliseconds.
+ * @param {number} duration - Delay in milliseconds.
+ * @returns {Promise<void>}
+ */
 function delay(duration) {
   return new Promise((resolve) => {
     setTimeout(resolve, duration);
   });
 }
 
+/** Queues a grid-cell update so it cannot overlap another game action.
+ * @param {HTMLElement} cell - Grid cell selected by the player or dealer.
+ * @returns {Promise<*>} Result of the queued cell update.
+ */
 function updateCell(cell) {
   return queueAction(() => performUpdateCell(cell));
 }
 
+/** Finds a cell's zero-based position among its grid siblings.
+ * @param {HTMLElement} cell - Grid cell to locate.
+ * @returns {number} Cell index.
+ */
 function getCellIndex(cell) {
   return Array.from(cell.parentNode.children).indexOf(cell);
 }
 
+/** Records a shot and renders its shell mark in the selected cell.
+ * @param {HTMLElement} cell - Cell receiving the mark.
+ * @param {number} index - Cell index in grid state.
+ */
 function applyShotToCell(cell, index) {
   previousShot = { cell, index };
   grid[index] = shells[0];
@@ -24,8 +40,11 @@ function applyShotToCell(cell, index) {
   resetShotgun();
 }
 
+/** Resolves a dealer round win, including health loss or player game over.
+ * @returns {Promise<boolean>} Whether the round outcome was handled.
+ */
 async function handleDealerRoundWin() {
-  if (health !== 1) {
+  if (health > 1) {
     await animateDealerText(chooseRandomDialogue("dealerWin"), 1000, 800);
     updateHealth(-1);
 
@@ -36,15 +55,29 @@ async function handleDealerRoundWin() {
     return true;
   }
 
-  await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
-  playMusic("end");
-  updateHealth(-1);
-
-  elements.statusText.textContent = "You're lucky he's letting you live...";
-  elements.endScreen.classList.add("is-visible");
+  await handlePlayerGameOver(true);
   return true;
 }
 
+/** Displays the loss state and optionally removes one health point.
+ * @param {boolean} [loseHealth=false] - Whether to deduct health before ending.
+ * @returns {Promise<void>}
+ */
+async function handlePlayerGameOver(loseHealth = false) {
+  await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
+  playMusic("end");
+
+  if (loseHealth) {
+    updateHealth(-1);
+  }
+
+  elements.statusText.textContent = "You're lucky he's letting you live...";
+  elements.endScreen.classList.add("is-visible");
+}
+
+/** Advances the player's win count and resolves the round or game victory.
+ * @returns {Promise<boolean>} Whether the round outcome was handled.
+ */
 async function handlePlayerRoundWin() {
   winCounter++;
   updateTableBackdrop(winCounter);
@@ -66,6 +99,9 @@ async function handlePlayerRoundWin() {
   return true;
 }
 
+/** Resolves a win or draw after a shot.
+ * @returns {Promise<boolean>} Whether a terminal board outcome was handled.
+ */
 async function handleShotOutcome() {
   win = checkWin();
 
@@ -86,6 +122,9 @@ async function handleShotOutcome() {
   return false;
 }
 
+/** Handles a blank shot without placing a mark on the grid.
+ * @returns {Promise<void>}
+ */
 async function handleBlankShot() {
   resetShotgun();
   playSound("blank");
@@ -98,6 +137,9 @@ async function handleBlankShot() {
   await animateDealerText(chooseRandomDialogue("blank"), 1000, 800);
 }
 
+/** Consumes the fired shell and starts the next turn or reloads the shotgun.
+ * @returns {Promise<void>}
+ */
 async function finalizeShotTurn() {
   if (shells.length === 1) {
     // If shotgun empty, new round starts
@@ -110,6 +152,10 @@ async function finalizeShotTurn() {
   await performSwitchTurn();
 }
 
+/** Applies a shot to an empty cell and advances gameplay as appropriate.
+ * @param {HTMLElement} cell - Grid cell to update.
+ * @returns {Promise<void>}
+ */
 async function performUpdateCell(cell) {
   if ((win || !shotgunPickedUp) && !dealerTurn) {
     return;
@@ -136,6 +182,8 @@ async function performUpdateCell(cell) {
   await finalizeShotTurn();
 }
 
+/** Clears all grid marks and resets the recorded win state.
+ */
 function resetGrid() {
   grid = Array(9).fill(null);
   elements.grid.querySelectorAll(".cell-mark").forEach((mark) => {
@@ -144,16 +192,25 @@ function resetGrid() {
   win = null;
 }
 
+/** Marks the player's turn active and announces it.
+ * @returns {Promise<void>}
+ */
 async function handTurnToPlayer() {
   dealerTurn = false;
   await animateDealerText(chooseRandomDialogue("playerTurn"), 1000, 800);
 }
 
+/** Marks the dealer's turn active and runs the dealer's action.
+ * @returns {Promise<void>}
+ */
 async function handTurnToDealer() {
   dealerTurn = true;
   await performActionDealerTurn();
 }
 
+/** Switches to the other participant unless an item skips the dealer's turn.
+ * @returns {Promise<void>}
+ */
 async function performSwitchTurn() {
   if (dealerTurn) {
     await handTurnToPlayer();
@@ -169,6 +226,9 @@ async function performSwitchTurn() {
   await handTurnToDealer();
 }
 
+/** Checks the grid for a completed line or a draw.
+ * @returns {"win"|"draw"|null} The board outcome, if one exists.
+ */
 function checkWin() {
   for (const combination of WINNING_COMBINATIONS) {
     const [a, b, c] = combination;
@@ -187,6 +247,9 @@ function checkWin() {
   return null;
 }
 
+/** Changes health within its allowed range and refreshes the health display.
+ * @param {number} increment - Health points to add or subtract.
+ */
 function updateHealth(increment) {
   if (increment < 0) {
     playSound("lose-health");

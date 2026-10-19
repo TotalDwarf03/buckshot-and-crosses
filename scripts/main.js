@@ -3,15 +3,21 @@
  * It initialises the game and sets up event listeners.
  */
 
+/** Dismisses the initial focus prompt and arms the start button.
+ * @param {MouseEvent} event - Initial page click.
+ */
 function activateHome(event) {
   event.preventDefault();
   event.stopPropagation();
+  elements.homeLayer.querySelector(".focus-prompt").hidden = true;
   playMusic("blank-shell");
   elements.startButton.addEventListener("click", startGame);
 }
 
 document.addEventListener("click", activateHome, { capture: true, once: true });
 
+/** Starts the game presentation and wires its controls.
+ */
 function startGame() {
   playMusic("background-music");
 
@@ -40,12 +46,16 @@ function startGame() {
   // The game will then start once the waiver is signed, which is handled in toggleWaiver().
 }
 
+/** Registers document-level handlers for pointer lock and keyboard input.
+ */
 function setupGlobalEventHandlers() {
   document.addEventListener("pointerlockchange", handlePointerLockChange);
   document.addEventListener("pointerlockerror", handlePointerLockError);
   document.addEventListener("keydown", handleDocumentKeydown);
 }
 
+/** Connects the shotgun, briefcase, and restart controls to their actions.
+ */
 function setupInteractionHandlers() {
   elements.shotgunImage.addEventListener("click", pickupShotgun);
   elements.briefcase.addEventListener("click", () => {
@@ -69,24 +79,35 @@ function setupInteractionHandlers() {
   });
 }
 
+/** Resets aiming when the shotgun loses pointer lock.
+ */
 function handlePointerLockChange() {
   if (shotgunPickedUp && document.pointerLockElement === null) {
     resetShotgun();
   }
 }
 
+/** Resets aiming if pointer lock could not be acquired.
+ */
 function handlePointerLockError() {
   if (shotgunPickedUp && document.pointerLockElement !== document.body) {
     resetShotgun();
   }
 }
 
+/** Cancels shotgun aiming when the player presses Escape.
+ * @param {KeyboardEvent} event - Keyboard event to inspect.
+ */
 function handleDocumentKeydown(event) {
   if (shotgunPickedUp && event.key === "Escape") {
     resetShotgun();
   }
 }
 
+/** Shows or dismisses the waiver and starts gameplay after acceptance.
+ * @param {boolean} visible - Whether to display the waiver.
+ * @returns {HTMLElement|undefined} The waiver element when shown.
+ */
 function toggleWaiver(visible) {
   const waiver = elements.waiver;
 
