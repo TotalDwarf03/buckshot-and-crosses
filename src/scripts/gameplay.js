@@ -37,6 +37,7 @@ async function handleDealerRoundWin() {
   }
 
   await animateDealerText(chooseRandomDialogue("gameLose"), 1000, 800);
+  playMusic("end");
   updateHealth(-1);
 
   elements.statusText.textContent = "You're lucky he's letting you live...";
@@ -47,6 +48,7 @@ async function handleDealerRoundWin() {
 async function handlePlayerRoundWin() {
   winCounter++;
   updateTableBackdrop(winCounter);
+  playSound("round-light");
 
   if (winCounter !== 2) {
     await animateDealerText(chooseRandomDialogue("playerWin"), 1000, 800);
@@ -57,6 +59,7 @@ async function handlePlayerRoundWin() {
 
   // Player has won 2 rounds, they win the game
   await animateDealerText(chooseRandomDialogue("gameWin"), 1000, 800);
+  playSound("briefcase-show");
 
   elements.briefcase.disabled = false;
   elements.briefcase.classList.add("is-visible");
@@ -85,6 +88,7 @@ async function handleShotOutcome() {
 
 async function handleBlankShot() {
   resetShotgun();
+  playSound("blank");
 
   if (dealerTurn) {
     await animateDealerText(chooseRandomDialogue("mistake"), 1000, 800);
@@ -121,6 +125,7 @@ async function performUpdateCell(cell) {
   if (shells[0] === "blank") {
     await handleBlankShot();
   } else {
+    playSound("live");
     applyShotToCell(cell, index);
 
     if (await handleShotOutcome()) {
@@ -194,6 +199,10 @@ function checkWin() {
 }
 
 function updateHealth(increment) {
+  if (increment < 0) {
+    playSound("lose-health");
+  }
+
   health = Math.max(0, Math.min(health + increment, MAX_HEALTH));
   updateHealthDisplay();
 }

@@ -6,6 +6,14 @@ class InventoryItemBase extends HTMLElement {
         return;
       }
 
+      const itemSounds = {
+        "cigarette-pack": "cigarette",
+        "custom-flashlight": "flashlight",
+        "custom-jammer": "jammer",
+        "expired-vodka": "vodka",
+        "strange-contraption": "contraption",
+      };
+      playSound(itemSounds[this.localName]);
       this.useItem(this.slot);
     });
   }

@@ -92,6 +92,7 @@ async function resolveBlankPump() {
 
 async function performPumpShotgun(itemUsed = null) {
   pumpAnimating = true;
+  playSound("pump-shotgun");
   const currentShell = getPumpedShell(itemUsed);
 
   await animatePumpedShell(currentShell);
@@ -268,6 +269,7 @@ function addItem(generateItem = true) {
   const newItem = availableItems[randint(0, availableItems.length - 1)];
   const emptySlot = items.findIndex((item) => item === null);
   items[emptySlot] = newItem;
+  playSound(`item-${randint(1, 4)}`);
   updateInventoryDisplay(newItem, emptySlot);
   return { newItem, emptySlot };
 }
@@ -298,6 +300,7 @@ function chamberShellsIntoShotgun(sortedShells, loadStartDelay, loadEndDelay) {
         const shellImage = shellLoader.children[reverseIndex];
         shellImage.classList.remove("is-visible");
         shellImage.classList.add("is-loading");
+        playSound("load-shell");
       }, index * SHELL_TIMINGS.loadDelay);
     });
   }, loadStartDelay);

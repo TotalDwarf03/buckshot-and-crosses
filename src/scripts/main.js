@@ -3,7 +3,18 @@
  * It initialises the game and sets up event listeners.
  */
 
-elements.startButton.addEventListener("click", () => {
+function activateHome(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  playMusic("blank-shell");
+  elements.startButton.addEventListener("click", startGame);
+}
+
+document.addEventListener("click", activateHome, { capture: true, once: true });
+
+function startGame() {
+  playMusic("background-music");
+
   // Fade out home screen
   elements.homeLayer.style.opacity = "0";
 
@@ -27,7 +38,7 @@ elements.startButton.addEventListener("click", () => {
   }, 3000);
 
   // The game will then start once the waiver is signed, which is handled in toggleWaiver().
-});
+}
 
 function setupGlobalEventHandlers() {
   document.addEventListener("pointerlockchange", handlePointerLockChange);
@@ -37,6 +48,11 @@ function setupGlobalEventHandlers() {
 function setupInteractionHandlers() {
   elements.shotgunImage.addEventListener("click", pickupShotgun);
   elements.briefcase.addEventListener("click", () => {
+    playSound("briefcase-latch");
+    setTimeout(() => {
+      playSound("briefcase-open");
+      playMusic("end");
+    }, 180);
     elements.briefcaseImage.src = "assets/briefcase/briefcase-open.png";
     elements.briefcaseImage.alt = "Opened briefcase";
     elements.briefcase.disabled = true;

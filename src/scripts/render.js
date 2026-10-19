@@ -161,6 +161,7 @@ function animateDealerText(
       () => {
         dealerContainer.classList.remove("buzzing");
         dealerText.textContent = "";
+        playSound("dealer-talk");
         dealerText.classList.add("typing");
 
         message.split("").forEach((char, index) => {
